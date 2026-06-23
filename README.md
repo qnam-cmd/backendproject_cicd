@@ -254,3 +254,6 @@ sudo chmod -R 777 /home/ec2-user/app/uploads
 환경 변수 관리: GitHub Settings -> Secrets에 등록 (KAKAO_MAP_APPKEY, DB_PASSWORD 등)
 
 서버 접속 방법: 관리자 권한 소지자만 SSH 접속 가능
+
+
+다시올리자
