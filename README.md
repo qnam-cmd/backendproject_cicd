@@ -245,7 +245,7 @@ sudo chmod -R 777 /home/ec2-user/app/uploads
 
 
 
-배포 주소: http://13.209.19.55:8094
+배포 주소: http://43.201.217.118:8094
 
 서버 정보: AWS EC2 (Amazon Linux 2023)
 
