@@ -71,6 +71,7 @@ jobs:
             echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
             echo "SPRING_RABBITMQ_USERNAME=${{ secrets.SPRING_RABBITMQ_USERNAME }}" >> .env
             echo "SPRING_RABBITMQ_PASSWORD=${{ secrets.SPRING_RABBITMQ_PASSWORD }}" >> .env
+            echo "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" >> .env
             
             # 기존에 들고 있던 컨테이너 종료
             docker compose down
