@@ -172,6 +172,8 @@ public class CommunityServiceImpl implements CommunityService {
                 .category(communityEntity.getCategory())
                 .memberId(communityEntity.getMemberEntity().getId())
                 .attachFile(communityEntity.getAttachFile())
+                .newFileName(communityEntity.getCommunityFileEntities().get(0).getNewFileName())
+                .oldFileName(communityEntity.getCommunityFileEntities().get(0).getOldFileName())
                 .createTime(communityEntity.getCreateTime())
                 .updateTime(communityEntity.getUpdateTime())
                 .count(communityEntity.getCount())

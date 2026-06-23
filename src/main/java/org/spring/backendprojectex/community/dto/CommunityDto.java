@@ -34,6 +34,11 @@ public class CommunityDto {
 
     private MultipartFile communityFile;    // 실제파일(이미지)
 
+    private String oldFileName;
+
+    private String newFileName;
+
+
     private MemberEntity memberEntity;
 
     private Long memberId;
