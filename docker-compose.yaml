@@ -34,7 +34,7 @@ services:
       - spring-network
 
   backendprojectex:
-    image: backendprojectex:latest
+    image: ${DOCKERHUB_USERNAME}/backendprojectex:latest
     container_name: backendprojectex
     restart: always
     ports:
