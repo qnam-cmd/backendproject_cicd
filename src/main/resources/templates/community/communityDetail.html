@@ -21,7 +21,7 @@
 
                 <div class="community-img">
                     <th:block th:if="${community.attachFile==1}">
-                        <img th:src="@{|/full/upload/backend/board/${community.newFileName}|}" alt="상품이미지">
+                        <img th:src="@{|/full/uploads/backend/board/${community.newFileName}|}" alt="상품이미지">
                     </th:block>
                     <th:block th:unless="${community.attachFile==1}">
                         <img src="https://placehold.co/400x250/cccccc/ffffff?text=ITEM" alt="상품 이미지">

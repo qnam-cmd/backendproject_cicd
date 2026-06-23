@@ -66,7 +66,7 @@ jobs:
           script: |
             cd /home/ec2-user/app
             
-            # GitHub Secrets에 등록된 값을 사용하여 EC2 현지에서 .env 호나경변수 파일 동적 생성
+            # GitHub Secrets에 등록된 값을 사용하여 EC2 현지에서 .env 환경변수 파일 동적 생성
             echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" > .env
             echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
             echo "SPRING_RABBITMQ_USERNAME=${{ secrets.SPRING_RABBITMQ_USERNAME }}" >> .env
