@@ -17,34 +17,37 @@ itemSize.addEventListener('change', totalFn);
 
 const cartFn = (event) => {
     event.preventDefault();
-    const url = `/shop/insert/addCart2`;
+
     const itemData = {
         id: id.value,
         itemTitle: itemTitle.value,
         itemDetail: itemDetail.value,
         itemPrice: itemPrice.value,
         memberId: memberId.value,
-        itemSize: itemSize.value,
-    }
-    fetch(url, {
+        itemSize: itemSize.value
+    };
+
+    fetch('/shop/insert/addCart2', {
         method: 'POST',
         headers: {
-            'Content-Type' : 'application/json'
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify(itemData),
+        body: JSON.stringify(itemData)
     })
-        .then(res=>res.json())
-        .then(rs=>{
-            console.log(rs)
-            // 정상 -> /cart/cartList
-            if(rs==1){
-                location.href=`/shop/cartList/${memberId.value}`;
+        .then(res => res.json())
+        .then(rs => {
+            if (rs == 1) {
+                alert('장바구니 등록 완료');
+                location.href = `/shop/cartList/${memberId.value}`;
+            } else {
+                alert('장바구니 등록 실패');
             }
-            // 에러 그대로
         })
-        .catch(err=>console.log(err))
-    alert("장바구니GO");
-}
+        .catch(err => {
+            console.error(err);
+            alert('서버 오류');
+        });
+};
 
 
 (() => totalFn())();

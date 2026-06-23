@@ -1,94 +1,345 @@
+@charset "UTF-8";
 @import url(/css/common/reset.css);
-
+/* =======================================================================
+   1. 기본 레이아웃 및 래퍼
+   ======================================================================= */
 .communityDetail {
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 0 20px;
-    font-family: 'Pretendard', sans-serif;
+    width: 100%;
+    padding: 40px 0 80px 0;
+    display: flex;
+    justify-content: center;
+    background-color: #fafafa; /* 배경을 살짝 톤다운하여 카드가 돋보이게 함 */
 }
 
-/* 제목 숨김 처리 */
-body > h1:first-of-type { display: none; }
+.communityDetail-con {
+    width: 1000px;
+    max-width: 95%;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
 
-/* 상단: 이미지와 정보 */
+/* =======================================================================
+   2. 게시글 상세 상단 (이미지 + 정보)
+   ======================================================================= */
 .communityDetail-con-top {
     display: flex;
-    gap: 40px;
-    margin-bottom: 40px;
-    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 30px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 40px;
 }
 
-/* 좌측: 첨부 이미지 */
+/* 게시글 제목 */
+.communityDetail-con-top > h1 {
+    width: 100%;
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #222;
+    padding-bottom: 15px;
+}
+
+/* 왼쪽 영역 (이미지) */
 .communityDetail-con-top .left {
-    flex: 1;
-    max-width: 400px;
+    flex: 1 1 400px;
 }
 
 .community-img {
     width: 100%;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border: 1px solid #e5e5e5;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .community-img img {
     width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: contain;
     display: block;
 }
 
-/* 우측: 상세 정보 입력/출력 폼 */
-.communityDetail-con-top .right { flex: 1.5; }
+/* 오른쪽 영역 (게시글 정보 폼) */
+.communityDetail-con-top .right {
+    flex: 1 1 400px;
+}
 
 .communityDetail-con-top .right ul {
-    list-style: none; padding: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .communityDetail-con-top .right li {
     display: flex;
     align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #f8f9fa;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #eee;
+}
+
+.communityDetail-con-top .right li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-top: 15px;
 }
 
 .communityDetail-con-top .right label {
-    width: 120px; font-weight: 600; color: #555;
+    width: 110px;
+    font-weight: 600;
+    color: #555;
+    font-size: 15px;
 }
 
-.communityDetail-con-top .right input {
-    flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px;
+/* 정보 입력칸 (readonly 포함) */
+.communityDetail-con-top .right input[type="text"],
+.communityDetail-con-top .right input[type="number"] {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    color: #333;
+    transition: border-color 0.3s;
 }
 
-/* 수정/삭제 버튼 */
+.communityDetail-con-top .right input[readonly] {
+    background-color: #f5f5f5;
+    border-color: #e8e8e8;
+    color: #777;
+}
+
+.communityDetail-con-top .right input:not([readonly]):focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.communityDetail-con-top .right span {
+    flex: 1;
+    color: #666;
+    font-size: 15px;
+}
+
+/* 상단 버튼 (수정, 삭제) */
 .communityDetail-con-top .right li:last-child {
-    gap: 10px; margin-top: 20px; border: none;
+    display: flex;
+    gap: 10px;
 }
 
 .communityDetail-con-top .right a,
 .communityDetail-con-top .right button {
-    padding: 10px 20px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer;
+    flex: 1;
+    padding: 12px 0;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
 }
 
-.communityDetail-con-top .right a { background: #2c3e50; color: white; text-decoration: none; }
-.communityDetail-con-top .right button { background: #e74c3c; color: white; }
-
-/* 하단 댓글 영역 */
-.communityDetail-con-bottom {
-    border-top: 2px solid #2c3e50;
-    padding-top: 30px;
+/* 수정 버튼 (a태그) */
+.communityDetail-con-top .right a {
+    background-color: #4CAF50;
+    color: white;
 }
 
-/* 댓글 입력 폼 */
+.communityDetail-con-top .right a:hover {
+    background-color: #45a049;
+}
+
+/* 삭제 버튼 (button태그) */
+.communityDetail-con-top .right button {
+    background-color: #f44336;
+    color: white;
+}
+
+.communityDetail-con-top .right button:hover {
+    background-color: #da190b;
+}
+
+/* =======================================================================
+   3. 하단 (댓글 영역)
+   ======================================================================= */
+.reply-con h3 {
+    font-size: 22px;
+    color: #222;
+    border-bottom: 2px solid #222;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+.reply-count {
+    color: #ff9800;
+}
+
+/* 댓글 작성 영역 */
 .reply-writer-writer {
-    background: #f9f9f9; padding: 20px; border-radius: 8px;
-    display: flex; flex-direction: column; gap: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 25px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
 }
 
-.reply-writer-info { display: flex; gap: 10px; align-items: center; }
+.reply-writer-info {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.reply-writer-info label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #444;
+}
+
+.reply-writer-info input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+.reply-writer-info input[readonly] {
+    background-color: #eef;
+}
 
 #replyContent {
-    width: 100%; height: 80px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; resize: none;
+    width: 100%;
+    min-height: 90px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    outline: none;
 }
 
-.reply-writer-writer button {
-    align-self: flex-end; padding: 8px 20px; background: #2c3e50; color: white; border: none; border-radius: 4px; cursor: pointer;
+#replyContent:focus {
+    border-color: #999;
+}
+
+.reply-writer-writer > button {
+    align-self: flex-end;
+    padding: 10px 30px;
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.reply-writer-writer > button:hover {
+    background-color: #555;
+}
+
+/* =======================================================================
+   4. 자바스크립트로 렌더링되는 댓글 리스트 (.reply-item)
+   ======================================================================= */
+.replyList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.reply-item {
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.reply-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.reply-header .writer {
+    font-weight: 700;
+    color: #222;
+    font-size: 15px;
+}
+
+.reply-header .date {
+    font-size: 13px;
+    color: #888;
+}
+
+.reply-body p {
+    margin: 0;
+    color: #444;
+    font-size: 15px;
+    line-height: 1.6;
+    white-space: pre-wrap; /* 줄바꿈 유지 */
+}
+
+.reply-btns {
+    margin-top: 15px;
+    text-align: right;
+}
+
+.reply-btns button {
+    background-color: transparent;
+    color: #f44336;
+    border: 1px solid #f44336;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.reply-btns button:hover {
+    background-color: #f44336;
+    color: white;
+}
+
+/* =======================================================================
+   5. 반응형 (모바일 뷰)
+   ======================================================================= */
+@media screen and (max-width: 768px) {
+    .communityDetail-con-top {
+        flex-direction: column;
+    }
+
+    .communityDetail-con-top .left,
+    .communityDetail-con-top .right {
+        width: 100%;
+    }
+
+    .reply-writer-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .reply-writer-info input {
+        width: 100%;
+    }
 }
