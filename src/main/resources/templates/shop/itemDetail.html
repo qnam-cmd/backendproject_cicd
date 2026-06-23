@@ -22,7 +22,7 @@
 
                 <div class="item-img">
                     <th:block th:if="${item.attachFile==1}">
-                        <img th:src="@{|/upload/backend/item/${item.newFileName}|}" alt="상품이미지">
+                        <img th:src="@{|/upload/item/${item.newFileName}|}" alt="상품이미지">
 <!--                        <img th:src="@{|/home/ec2-user/app/uploads/item/${community.newFileName}|}" alt="상품이미지">-->
                     </th:block>
                     <th:block th:unless="${item.attachFile==1}">
