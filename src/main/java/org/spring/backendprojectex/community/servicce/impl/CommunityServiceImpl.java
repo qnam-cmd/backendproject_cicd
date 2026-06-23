@@ -165,6 +165,20 @@ public class CommunityServiceImpl implements CommunityService {
         CommunityEntity communityEntity = communityRepository.findById(id)
                 .orElseThrow(()-> new IllegalArgumentException("게시글(id)이 존재하지 않습니다."));
 
+        String newFileName = null;
+        String oldFileName = null;
+
+        if (communityEntity.getAttachFile() == 1
+                && !communityEntity.getCommunityFileEntities().isEmpty()) {
+
+            newFileName =
+                    communityEntity.getCommunityFileEntities().get(0).getNewFileName();
+
+            oldFileName =
+                    communityEntity.getCommunityFileEntities().get(0).getOldFileName();
+        }
+
+
         return CommunityDto.builder()
                 .id(communityEntity.getId())
                 .title(communityEntity.getTitle())
@@ -173,8 +187,8 @@ public class CommunityServiceImpl implements CommunityService {
                 .category(communityEntity.getCategory())
                 .memberId(communityEntity.getMemberEntity().getId())
                 .attachFile(communityEntity.getAttachFile())
-                .newFileName(communityEntity.getCommunityFileEntities().get(0).getNewFileName())
-                .oldFileName(communityEntity.getCommunityFileEntities().get(0).getOldFileName())
+                .newFileName(newFileName)
+                .oldFileName(oldFileName)
                 .createTime(communityEntity.getCreateTime())
                 .updateTime(communityEntity.getUpdateTime())
                 .count(communityEntity.getCount())
