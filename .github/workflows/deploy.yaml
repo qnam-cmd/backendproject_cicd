@@ -20,8 +20,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ec2-user/app
-            
-            # 1. .env 파일 생성 (환경 변수들을 파일로 저장)
             cat <<EOF > .env
             MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
             SPRING_RABBITMQ_USERNAME=${{ secrets.SPRING_RABBITMQ_USERNAME }}
@@ -38,12 +36,10 @@ jobs:
             KOBIS_SERVICE_KEY=${{ secrets.KOBIS_SERVICE_KEY }}
             BUS_SERVICE_KEY=${{ secrets.BUS_SERVICE_KEY }}
             SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-
+            EOF
             
-            # 2. 권한 설정 및 도커 컴포즈 실행
             chmod +x ./gradlew
             ./gradlew clean build -x test
             
-            # .env 파일을 자동으로 인식하여 환경 변수 주입
             docker compose down
             docker compose up -d --build
