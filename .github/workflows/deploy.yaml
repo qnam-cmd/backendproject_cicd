@@ -20,7 +20,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ec2-user/app
-            cat <<EOF > .env
+
+            cat > .env <<EOF
             MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
             SPRING_RABBITMQ_USERNAME=${{ secrets.SPRING_RABBITMQ_USERNAME }}
             SPRING_RABBITMQ_PASSWORD=${{ secrets.SPRING_RABBITMQ_PASSWORD }}
@@ -37,9 +38,9 @@ jobs:
             BUS_SERVICE_KEY=${{ secrets.BUS_SERVICE_KEY }}
             SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
             EOF
-            
+          
             chmod +x ./gradlew
             ./gradlew clean build -x test
-            
+          
             docker compose down
             docker compose up -d --build
