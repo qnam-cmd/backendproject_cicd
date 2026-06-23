@@ -5,42 +5,79 @@ on:
     branches: [ "main" ]
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
+    steps:
+      # 1. Github 저장소의 소스코드를 체크아웃
+      - name: Checkout code
+        uses: actions/checkout@v3
 
+      # 2. 스프링 부트 프로젝트를 빌드하기 위해 JDK 17 세팅
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # 3. Gradle 빌드 권한 부여 및 빌드 수행 (테스트 제외)
+      - name: Build with Gradle
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build -x test
+
+      # 4. 도커 허브(Docker Hub) 로그인을 위해 인증
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 5. 도커 이미지 빌드 후 도커 허브로 PUSH
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/backendprojectex:latest .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/backendprojectex:latest
+
+  deploy:
+    needs: build-and-push # 빌드와 푸시 작업이 완전히 성공한 후에만 배포 프로세스를 진행
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Execute remote SSH commands to deploy
-        uses: appleboy/ssh-action@v1.0.3
+      # 1. EC2의 ~/app 폴더로 프로젝트 내 docker-compose.yml 파일을 안전하게 복사(SCP)
+      - name: Copy docker-compose.yml via SCP
+        uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
+          username: ec2-user  # Amazon Linux 2023의 기본 계정명
           key: ${{ secrets.EC2_SSH_KEY }}
+          source: "docker-compose.yaml"
+          target: "/home/ec2-user/app"
+
+      # 2. EC2에 SSH 원격 접속 후 기존 컨테이너를 종료하고 새로운 버전을 Pull 받아 기동
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          command_timeout: 30m
           script: |
             cd /home/ec2-user/app
-
-            cat > .env <<EOF
-            MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
-            SPRING_RABBITMQ_USERNAME=${{ secrets.SPRING_RABBITMQ_USERNAME }}
-            SPRING_RABBITMQ_PASSWORD=${{ secrets.SPRING_RABBITMQ_PASSWORD }}
-            GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
-            GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
-            NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}
-            NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}
-            KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}
-            KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }}
-            KAKAO_MAP_APPKEY=${{ secrets.KAKAO_MAP_APPKEY }}
-            KAKAO_REST_API_KEY=${{ secrets.KAKAO_REST_API_KEY }}
-            OPENWEATHER_SERVICE_KEY=${{ secrets.OPENWEATHER_SERVICE_KEY }}
-            KOBIS_SERVICE_KEY=${{ secrets.KOBIS_SERVICE_KEY }}
-            BUS_SERVICE_KEY=${{ secrets.BUS_SERVICE_KEY }}
-            SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-            EOF
-          
-            chmod +x ./gradlew
-            ./gradlew clean build -x test
-          
+            
+            # GitHub Secrets에 등록된 값을 사용하여 EC2 현지에서 .env 호나경변수 파일 동적 생성
+            echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" > .env
+            echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
+            echo "SPRING_RABBITMQ_USERNAME=${{ secrets.SPRING_RABBITMQ_USERNAME }}" >> .env
+            echo "SPRING_RABBITMQ_PASSWORD=${{ secrets.SPRING_RABBITMQ_PASSWORD }}" >> .env
+            
+            # 기존에 들고 있던 컨테이너 종료
             docker compose down
-            docker compose up -d --build
+            # 도커 허브에서 방금 push된 최신 이미지 명시적으로 다운로드(Pull)
+            docker compose pull
+            # 백그라운드로 전체 서비스(MySQL, RabbitMQ, Spring) 일괄 가동
+            docker compose up -d
+            
+            # EC2의 하드디스크 용량 관리를 위해 사용되지 않은 이전 도커 이미지(더미파일)들 정리
+            docker image prune -f

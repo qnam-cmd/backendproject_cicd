@@ -34,7 +34,6 @@ services:
       - spring-network
 
   backendprojectex:
-    build: .
     image: backendprojectex:latest
     container_name: backendprojectex
     restart: always
