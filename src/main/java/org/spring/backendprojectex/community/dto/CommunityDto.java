@@ -1,6 +1,4 @@
 package org.spring.backendprojectex.community.dto;
-
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.spring.backendprojectex.member.entity.MemberEntity;
@@ -37,7 +35,6 @@ public class CommunityDto {
     private String oldFileName;
 
     private String newFileName;
-
 
     private MemberEntity memberEntity;
 
