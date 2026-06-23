@@ -2,10 +2,7 @@ package org.spring.backendprojectex.shop.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.spring.backendprojectex.shop.entity.ItemFileEntity;
 import org.spring.backendprojectex.member.entity.MemberEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Setter
+@Getter
 public class ItemDto {
     private Long id;
     @NotBlank(message = "상품명을 입력해주세요")
