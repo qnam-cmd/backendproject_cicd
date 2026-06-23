@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Join</title>
+    <link rel="stylesheet" th:href="@{/css/member/join.css}">
+
+</head>
+<body>
+<div th:replace="~{fragments/common/header :: headerFragment}"></div>
+
+<div class="join">
+    <div class="join-con">
+        <form th:action="@{/member/join}" method="POST" th:object="${memberDto}">
+            <ul>
+                <!-- *{}문법의 의미 id=""가 없어도 자연스럽게 ${}로 해석 -->
+                <li> <label for="userEmail">이메일</label> <input type="email" th:field="*{userEmail}" id="userEmail"> </li>
+                <li th:if="${#fields.hasErrors('userEmail')}" th:errors="*{userEmail}" class="error"> </li>
+
+                <li> <label for="userName">이름</label> <input type="text" th:field="*{userName}" id="userName"> </li>
+                <li th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" class="error"> </li>
+
+                <li> <label for="userPw">비밀번호</label> <input type="password" th:field="*{userPw}" id="userPw"> </li>
+                <li th:if="${#fields.hasErrors('userPw')}" th:errors="*{userPw}" class="error"> </li>
+                <li>
+                    <input type="reset" value="초기화" class="li-last">
+                    <input type="submit" value="회원가입">
+                    <a th:href="@{/member/login}" class="li-last">로그인</a>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/common/footer :: footerFragment}"></div>
+</body>
+</html>

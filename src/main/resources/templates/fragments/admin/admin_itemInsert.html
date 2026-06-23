@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="adminItemInsertFragment">
+    <link rel="stylesheet" th:href="@{/css/admin/admin_itemInsert.css}">
+    <div class="title"><h1>상품등록</h1></div>
+    <div class="itemInsert">
+        <div class="itemInsert-con">
+            <form th:action="@{/admin/itemInsert}" method="POST" th:object="${itemDto}" enctype="multipart/form-data">
+                <ul>
+                    <li>
+                        <label for="itemTitle">상품명</label>
+                        <input type="text" th:field="*{itemTitle}" id="itemTitle" placeholder="상품명">
+                    </li>
+                    <li th:if="${#fields.hasErrors('itemTitle')}" th:errors="*{itemTitle}" class="error"></li>
+
+                    <li>
+                        <label for="memberId">회원 ID</label>
+                        <input type="text" id="memberId"
+                               th:value="${#authentication != null ? #authentication.principal.memberEntity.id : ''}"
+                               readonly>
+                    </li>
+                    <li th:if="${#fields.hasErrors('memberId')}" th:errors="*{memberId}" class="error"></li>
+
+                    <li>
+                        <label for="itemDetail">상품 설명</label>
+                        <input type="text" th:field="*{itemDetail}" id="itemDetail" placeholder="상품설명">
+                    </li>
+                    <li th:if="${#fields.hasErrors('itemDetail')}" th:errors="*{itemDetail}" class="error"></li>
+
+                    <li>
+                        <label for="itemPrice">상품 가격</label>
+                        <input type="text" th:field="*{itemPrice}" id="itemPrice" placeholder="상품가격">
+                    </li>
+                    <li th:if="${#fields.hasErrors('itemPrice')}" th:errors="*{itemPrice}" class="error"></li>
+
+                    <li class="s1"><span>파일</span><input type="file" name="itemFile" id="itemFile"></li>
+
+                    <li class="last-child">
+                        <input type="submit" class="li-last" value="상품등록">
+                        <input type="reset" class="li-last" value="초기화">
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</th:block>
+
+</html>

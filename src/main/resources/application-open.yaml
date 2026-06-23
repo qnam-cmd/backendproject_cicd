@@ -1,0 +1,12 @@
+open:
+  openWeatherMap:
+    serviceKey: ${OPENWEATHER_SERVICE_KEY}
+  kobis:
+    serviceKey: ${KOBIS_SERVICE_KEY}
+  data:
+    bus:
+      serviceKey: ${BUS_SERVICE_KEY}
+kakao:
+  map:
+    appKey: ${KAKAO_MAP_APPKEY} # JavaScript 키
+    restApiKey: ${KAKAO_REST_API_KEY} # Rest API 키

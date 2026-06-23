@@ -1,0 +1,114 @@
+@import url(/css/common/reset.css);
+@import url(/css/common/reset.css);
+
+body {
+    font-family: 'Pretendard', sans-serif;
+    background-color: #f4f6f9; /* 배경을 살짝 어둡게 하여 표를 돋보이게 함 */
+}
+
+h1 {
+    max-width: 1200px;
+    margin: 40px auto 20px;
+    font-size: 28px;
+    color: #2c3e50;
+    font-weight: 700;
+    padding: 0 20px;
+}
+
+/* 메인 테이블 디자인 */
+table {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    overflow: hidden; /* 테두리 둥글게 깎기 위해 필요 */
+}
+
+th, td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #eeeeee;
+}
+
+th {
+    background-color: #2c3e50;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+td {
+    font-size: 14px;
+    color: #444444;
+}
+
+/* 하단 주문 옵션 선택 영역 (|| 파이프라인 무시하고 깔끔하게 정렬) */
+tr:nth-last-child(2) td {
+    background-color: #fdfdfd;
+    text-align: left;
+    padding: 25px 30px;
+    line-height: 2.5; /* 요소들이 너무 붙지 않게 줄간격 넓힘 */
+    color: #transparent; /* || 텍스트 숨기기 꼼수 */
+}
+
+tr:nth-last-child(2) span {
+    font-weight: 600;
+    color: #555555;
+    margin-left: 15px;
+}
+
+tr:nth-last-child(2) span:first-child { margin-left: 0; }
+
+tr:nth-last-child(2) select,
+tr:nth-last-child(2) input[type="text"] {
+    padding: 8px 12px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    margin: 0 10px 0 5px;
+    color: #333;
+    outline: none;
+}
+
+#payResult {
+    font-size: 22px;
+    color: #e67e22; /* 결제 금액 강조 */
+    font-weight: bold;
+}
+
+/* 맨 마지막 결제 버튼 영역 */
+tr:last-child td {
+    background-color: #f8f9fa;
+    padding: 20px 30px;
+    text-align: right; /* 버튼을 우측으로 배치 */
+}
+
+tr:last-child a {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #ffffff;
+    border: 1px solid #2c3e50;
+    color: #2c3e50;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    margin-right: 10px;
+    transition: background 0.2s;
+}
+tr:last-child a:hover { background: #f0f0f0; }
+
+tr:last-child button {
+    padding: 12px 35px;
+    background: #e67e22;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+tr:last-child button:hover { background: #d35400; }

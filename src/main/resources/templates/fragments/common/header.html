@@ -1,0 +1,42 @@
+<div class="header" th:fragment="headerFragment">
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <div class="nav">
+
+        <h1 class="logo"> <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="logo"></a> </h1>
+        <div class="gnb">
+            <ul>
+                <!-- 공통 -->
+                <li>   <a th:href="@{/shop/index}">HOME</a>   </li>
+                <li>    <a th:href="@{/shop/itemList}">상품목록</a> </li>
+                <li>    <a th:href="@{/community/communityList}">Community</a> </li>
+
+                <!--로그인-->
+                <th:block sec:authorize="isAuthenticated()">
+<!--                    <li sec:authorize="hasRole('ADMIN')"> <a th:href="@{/shop/insert}">상품등록</a> </li>-->
+                    <li sec:authorize="hasRole('ADMIN')"> <a th:href="@{/admin}">관리자페이지</a> </li>
+                    <li class="cart-menu">
+                        <a th:href="@{/shop/cart}">
+                            <div class="cart-icon-wrap">
+                                <img th:src="@{/images/cart.png}" alt="cart">
+                                <span class="cart-badge"
+                                      th:if="${itemListCount > 0}"
+                                      th:text="${itemListCount}">
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>   <a th:href="@{/payment/paymentList}">결제내역</a>   </li>
+                    <li><a th:href="@{/member/logout}">로그아웃</a></li>
+                </th:block>
+
+                <!--비로그인-->
+                <th:block sec:authorize="isAnonymous()">
+                    <li>    <a th:href="@{/member/join}">회원가입</a>    </li>
+                    <li>    <a th:href="@{/member/login}">로그인</a>     </li>
+                </th:block>
+
+            </ul>
+        </div>
+
+    </div>
+</div>

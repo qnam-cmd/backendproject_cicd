@@ -1,0 +1,112 @@
+@import url(/css/common/reset.css);
+
+@import url(/css/common/reset.css);
+
+.community-con {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* 탭 메뉴 */
+.community-tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #eee;
+}
+
+.tab-item {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #7f8c8d;
+    font-weight: 600;
+}
+
+.tab-item.active {
+    color: #e67e22;
+    border-bottom: 2px solid #e67e22;
+}
+
+/* 게시판 헤더 및 리스트 (Grid 정렬) */
+/* 열 순서: 분류(100px) / 번호(80px) / 제목(나머지) / 작성자(120px) / 날짜(150px) / 조회(80px)
+*/
+.board-header, .board-item {
+    display: grid;
+    grid-template-columns: 100px 80px 1fr 120px 150px 80px;
+    align-items: center;
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.board-header {
+    background-color: #2c3e50;
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 8px 8px 0 0;
+}
+
+/* 제목 영역: 왼쪽 정렬 및 말줄임 처리 */
+.item-subject {
+    text-align: left;
+    padding-left: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.item-subject a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+.item-subject a:hover {
+    color: #e67e22;
+    text-decoration: underline;
+}
+
+/* 게시글 없음 */
+.empty-board {
+    padding: 50px;
+    text-align: center;
+    color: #999;
+}
+
+/* 버튼 및 */
+.btn-box { text-align: right; margin-top: 20px; }
+.btn-write {
+    display: inline-block;
+    padding: 10px 25px;
+    background: #e67e22;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+
+
+/* 페이징 영역 (기존 스타일 계승) */
+.paging ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    gap: 5px;
+}
+
+.paging li a, .paging li span {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    color: #555;
+    border-radius: 4px;
+}
+
+.paging .now {
+    background-color: #e67e22;
+    color: white;
+    border-color: #e67e22;
+}

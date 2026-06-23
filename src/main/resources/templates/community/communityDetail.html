@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세</title>
+    <script th:src="@{/js/community/communityReply.js}" defer></script>
+    <script th:src="@{/js/community/communityDetail.js}" defer></script>
+    <link rel="stylesheet" th:href="@{/css/communtiy/communityDetail.css}">
+</head>
+<body>
+<div th:replace="~{fragments/common/header :: headerFragment}"></div>
+
+<h1>상품 상세</h1>
+<div class="communityDetail">
+    <div class="communityDetail-con">
+        <div class="communityDetail-con-top">
+            <h1 th:text="${community.title}"></h1>
+
+            <div class="left">
+
+                <div class="community-img">
+                    <th:block th:if="${community.attachFile==1}">
+                        <img th:src="@{|/full/upload/backend/board/${community.newFileName}|}" alt="상품이미지">
+                    </th:block>
+                    <th:block th:unless="${community.attachFile==1}">
+                        <img src="https://placehold.co/400x250/cccccc/ffffff?text=ITEM" alt="상품 이미지">
+                    </th:block>
+                </div>
+            </div>
+
+            <div class="right">
+                    <ul>
+                        <li>
+                            <label for="id">게시글(ID)</label>
+                            <input type="text" name="id" id="id" th:value="${community.id}" readonly>
+                        </li>
+                        <li>
+                            <label for="title">제목</label>
+                            <input type="text" name="title" id="title" th:value="${community.title}">
+                        </li>
+                        <li>
+                            <label for="content">내용</label>
+                            <input type="text" name="content" id="content" th:value="${community.content}">
+                        </li>
+                        <li>
+                            <label for="nickName">작성자</label>
+                            <input type="text" name="nickName" id="nickName" th:value="${community.nickName}" readonly>
+                        </li>
+                        <li>
+                            <label for="memberId">회원(ID)</label>
+                            <input type="text" name="memberId" id="memberId" th:value="${community.memberId}" readonly>
+                        </li>
+                        <li>
+                            <label for="count">조회수</label>
+                            <input type="text" name="count" id="count" th:value="${community.count}" readonly>
+                        </li>
+                        <li>
+                            <label for="createTime">생성 날짜</label>
+                            <span th:text="${#temporals.format(community.createTime, 'yyyy.MM.dd HH:mm')}" id="createTime"></span>
+                        </li>
+                        <li>
+                            <label for="updateTime">수정 날짜</label>
+                            <span th:text="${#temporals.format(community.updateTime, 'yyyy.MM.dd HH:mm')}" id="updateTime"></span>
+                        </li>
+                        <li sec:authorize="isAuthenticated()" th:if="${#authentication.principal.memberEntity.id == community.memberId}">
+                            <a th:href="@{/community/communityUpdate/{id}(id=${community.id})}">수정</a>
+                            <button type="button" th:onclick="deleteCommunityFn([[${community.id}]])">삭제</button>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+
+        <div class="communityDetail-con-bottom">
+            <div class="reply">
+                <div class="reply-con">
+                    <h3>댓글 <span class="reply-count"></span></h3>
+                    <!--로그인한 경우에만 작성가능-->
+                    <input type="hidden" id="loginMemberId" sec:authorize="isAuthenticated()" th:value="${#authentication.principal.memberEntity.id}">
+                    <div class="reply-writer-writer" sec:authorize="isAuthenticated()">
+                        <div class="reply-writer-info">
+                            <!-- 회원만작성가능 -->
+                            <label for="replyWriter">작성자</label>
+                            <input type="text" id="replyWriter"
+                                   th:value="${#authentication.principal.memberEntity.userName}" readonly>
+                            <label for="replyPw">비밀번호</label>
+                            <input type="password" id="replyPw" placeholder="비밀번호(필수)">
+                        </div>
+                        <label for="replyContent"></label><textarea id="replyContent" placeholder="댓글을 입력하세요."></textarea>
+                        <button type="button" onclick="saveReplyFn()">작성</button>
+                    </div>
+                    <!--비로그인시 안내-->
+                    <div class="reply-writer" sec:authorize="isAnonymous()">
+                        <p style="color: red; font-size: 14px;">댓글을 작성하려면 <a th:href="@{/member/login}" style="color: blue">로그인</a>이 필요합니다.</p>
+                    </div>
+                </div>
+            </div>
+            <!--    댓글목록    -->
+            <div id="replyList" class="replyList"></div>
+        </div>
+
+    </div>
+</div>
+
+<div th:replace="~{fragments/common/footer :: footerFragment}"></div>
+</body>
+</html>

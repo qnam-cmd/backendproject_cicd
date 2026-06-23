@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>결제페이지</title>
+    <script th:src="@{/js/payment/payment.js}" defer></script>
+    <link rel="stylesheet" th:href="@{/css/payment/index.css}">
+</head>
+<body>
+<div th:replace="~{fragments/common/header :: headerFragment}"></div>
+
+<h1>결제목록</h1>
+<table>
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>itemSize</th>
+        <th>memberId</th>
+        <th>상품(ID)</th>
+        <th>itemTitle</th>
+        <th>itemDetail</th>
+        <th>itemPrice</th>
+        <th>SUM</th>
+        <th>createTime</th>
+        <th>updateTime</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item: ${itemList}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.itemSize}"></td>
+        <td th:text="${item.cartEntity.memberEntity.id}"></td>
+        <!--상품정보-->
+        <td th:text="${item.itemEntity.id}"></td>
+        <td th:text="${item.itemEntity.itemTitle}"></td>
+        <td th:text="${item.itemEntity.itemDetail}"></td>
+        <td th:text="${item.itemEntity.itemPrice}"></td>
+        <td th:text="${item.itemEntity.itemPrice*item.itemSize}"></td>
+        <!--상품정보-->
+        <td th:text="${item.createTime}"></td>
+        <td th:text="${item.updateTime}"></td>
+    </tr>
+    <tr>
+        <td colspan="10">
+            <span>결제방법</span>:
+            <select name="paymentType" id="paymentType">
+                <option value="kakao" selected>kakao</option>
+                <option value="현금">현금</option>
+                <option value="결제">결제</option>
+            </select>||
+            <span>주문처</span>:
+            <select name="orderPost" id="orderPost">
+                <option value="상계동">상계동</option>
+                <option value="중계동">중계동</option>
+                <option value="하계동">하계동</option>
+            </select>||
+            <span>주문방법</span>:
+            <select name="orderMethod" id="orderMethod">
+                <option value="배달" selected>배달</option>
+                <option value="택배" >택배</option>
+                <option value="직접수령" >직접수령</option>
+            </select> ||
+            <span>배달주소</span>
+            <input type="text" name="orderAddr" id="orderAddr">||
+            <span>주문금액</span>:
+            <span id="payResult" th:text="${#aggregates.sum(itemList.![itemEntity.itemPrice*itemSize])}"></span>원
+            ||
+            <span>장바구니ID</span>:
+            <span id="cartId" th:text="${itemList.get(0).cartEntity.getId()}"></span>
+            ||
+            <span>회원</span>
+            <span id="memberId" th:text="${itemList.get(0).cartEntity.memberEntity.id}"></span>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="10">
+            <a th:href="@{/item}">상품(상품리스트)</a>
+            <button onclick="paymentFn(event)">결제</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:replace="~{fragments/common/footer :: footerFragment}"></div>
+
+
+</body>
+</html>

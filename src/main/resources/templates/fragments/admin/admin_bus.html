@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="adminBusFragment">
+    <link rel="stylesheet" th:href="@{/css/admin/admin_bus.css}">
+    <script th:src="@{/js/admin/open/api/bus.js}" defer></script>
+    <div class="bus">
+        <div class="bus-con">
+            <div class="bus-top">
+
+                <h1>공공미디어포털 버스API</h1>
+                <div class="bus-search">
+                    <div class="bus-search-con">
+                        <input type="text" name="search" id="search" value="146"></input>
+                        <button onclick="busSearchFn()">버스노선조회</button>
+                    </div>
+                </div>
+
+                <div class="bus-list">
+                    <table class="bus-table1">
+                        <thead>
+                        <tr>
+                            <th>노선명</th>
+                            <th>버스타입</th>
+                            <th>기점</th>
+                            <th>종점</th>
+                            <th>금일 첫차시간</th>
+                            <th>금일 막차시간</th>
+                            <th>배차간격</th>
+                            <th>버스위치정보</th>
+                            <th>사업장</th>
+                        </tr>
+                        </thead>
+                        <tbody id="bus1">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bus-bottom">
+                    <div class="bus-station">
+                        <h1>STATION</h1>
+                        <div class="bus-station-con">
+
+                        </div>
+                    </div>
+                    <div class="map-con">
+                        <div id="map" style="width:400px; height:300px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="bus-detail-modal">
+            <div class="bus-detail-modal-con">
+                <span class="bus-close-btn" onclick="closeModal()">X</span>
+                <h1>버스정류장이름</h1>
+                <div id="map-view" style="width:300px; height:300px">
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</th:block>
+
+</html>

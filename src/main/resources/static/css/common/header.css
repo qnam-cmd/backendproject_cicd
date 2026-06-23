@@ -1,0 +1,94 @@
+@import url(/css/common/reset.css);
+
+/* 헤더 전체 컨테이너 */
+.header {
+    width: 100%;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    /*  상단고정  */
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+/* 네비게이션 영역 (로고와 메뉴를 양옆으로 배치) */
+.nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+/* 로고 스타일 */
+.logo a img {
+    width: 120px; /* 로고 크기 조정 */
+    display: block;
+}
+
+/* GNB(메뉴) 리스트 스타일 */
+.gnb ul {
+    list-style: none;
+    display: flex;
+    gap: 25px; /* 메뉴 간 간격 */
+    margin: 0;
+    padding: 0;
+}
+
+/* 메뉴 링크 스타일 */
+.gnb ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 15px;
+    transition: color 0.3s;
+}
+
+.gnb ul li a:hover {
+    color: #e67e22; /* 포인트 오렌지 컬러 적용 */
+}
+
+/* 장바구니 메뉴 */
+.cart-menu a{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+/* 아이콘 기준점 */
+.cart-icon-wrap{
+    position:relative;
+    display:inline-block;
+}
+
+/* 장바구니 이미지 */
+.cart-icon-wrap img{
+    width:75px;
+    height:75px;
+}
+
+/* 빨간 뱃지 */
+.cart-badge{
+    position:absolute;
+    top:-6px;
+    right:-8px;
+
+    min-width:18px;
+    height:18px;
+    padding:0 5px;
+
+    border-radius:50%;
+    background:#ff3b30;
+    color:#fff;
+
+    font-size:11px;
+    font-weight:bold;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    line-height:1;
+}

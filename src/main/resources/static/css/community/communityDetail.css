@@ -1,0 +1,94 @@
+@import url(/css/common/reset.css);
+
+.communityDetail {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+/* 제목 숨김 처리 */
+body > h1:first-of-type { display: none; }
+
+/* 상단: 이미지와 정보 */
+.communityDetail-con-top {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+    align-items: flex-start;
+}
+
+/* 좌측: 첨부 이미지 */
+.communityDetail-con-top .left {
+    flex: 1;
+    max-width: 400px;
+}
+
+.community-img {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.community-img img {
+    width: 100%;
+    display: block;
+}
+
+/* 우측: 상세 정보 입력/출력 폼 */
+.communityDetail-con-top .right { flex: 1.5; }
+
+.communityDetail-con-top .right ul {
+    list-style: none; padding: 0;
+}
+
+.communityDetail-con-top .right li {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.communityDetail-con-top .right label {
+    width: 120px; font-weight: 600; color: #555;
+}
+
+.communityDetail-con-top .right input {
+    flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px;
+}
+
+/* 수정/삭제 버튼 */
+.communityDetail-con-top .right li:last-child {
+    gap: 10px; margin-top: 20px; border: none;
+}
+
+.communityDetail-con-top .right a,
+.communityDetail-con-top .right button {
+    padding: 10px 20px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer;
+}
+
+.communityDetail-con-top .right a { background: #2c3e50; color: white; text-decoration: none; }
+.communityDetail-con-top .right button { background: #e74c3c; color: white; }
+
+/* 하단 댓글 영역 */
+.communityDetail-con-bottom {
+    border-top: 2px solid #2c3e50;
+    padding-top: 30px;
+}
+
+/* 댓글 입력 폼 */
+.reply-writer-writer {
+    background: #f9f9f9; padding: 20px; border-radius: 8px;
+    display: flex; flex-direction: column; gap: 10px;
+}
+
+.reply-writer-info { display: flex; gap: 10px; align-items: center; }
+
+#replyContent {
+    width: 100%; height: 80px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; resize: none;
+}
+
+.reply-writer-writer button {
+    align-self: flex-end; padding: 8px 20px; background: #2c3e50; color: white; border: none; border-radius: 4px; cursor: pointer;
+}

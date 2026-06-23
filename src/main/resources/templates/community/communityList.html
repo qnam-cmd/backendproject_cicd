@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/community/communityList.css}">
+
+</head>
+<body>
+<div th:replace="~{fragments/common/header :: headerFragment}"></div>
+
+<div class="community-con">
+
+    <div class="community-tabs">
+        <a th:href="@{/community/communityList}" class="tab-item">전체글보기</a>
+        <a th:href="@{/community/communityList(category='공지사항')}" class="tab-item">공지사항</a>
+        <a th:href="@{/community/communityList(category='상품후기')}" class="tab-item">상품 후기</a>
+        <a th:href="@{/community/communityList(category='상품Q&A')}" class="tab-item">상품 Q&A</a>
+        <a th:href="@{/community/communityList(category='교환/반품')}" class="tab-item">교환/반품</a>
+        <a th:href="@{/community/communityList(category='VIP')}" class="tab-item">VIP 전용게시판</a>
+        <a th:href="@{/community/communityList(category='배송조회')}" class="tab-item">배송조회</a>
+    </div>
+
+    <div class="board-info-bar">
+        <div class="info-title">
+            <strong th:text="${param.category != null ? param.category[0] : '전체글보기'}"> </strong>
+            <span>게시판 및 알림 내역입니다.</span>
+        </div>
+
+        <div class="search-box">
+            <form th:action="@{/community/communityList}" method="get">
+
+                <input type="hidden" name="category" th:value="${param.category}">
+
+                <select name="subject">
+                    <option value="" th:selected="${#strings.isEmpty( param.subject )}">::선택::</option>
+                    <option value="title">제목</option>
+                    <option value="content">내용</option>
+                    <option value="nickName">작성자</option>
+                </select>
+
+                <input type="text" name="search">
+                <button type="submit" class="btn">검색</button>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="board-list-wrap">
+
+        <div class="board-header">
+            <div class="category">분류</div>
+            <div class="id">번호</div>
+            <div class="title">제목</div>
+            <div class="writer">작성자</div>
+            <div class="date">작성일</div>
+            <div class="count">조회</div>
+        </div>
+
+        <div th:if="${communityList.totalElements == 0}"
+             class="empty-board">
+            등록된 게시글이 없습니다.
+        </div>
+        <div class="board-item" th:each="community : ${communityList.content}">
+
+            <div class="item-icon">
+                <span class="icon-text" th:text="${community.category}"></span>
+            </div>
+
+            <div class="item-id" th:text="${community.id}"></div>
+
+            <div class="item-subject">
+                <a th:href="@{/community/detail/{id}(id=${community.id})}" th:text="${community.title}"></a>
+            </div>
+
+            <div class="item-author" th:text="${community.nickName}"></div>
+
+            <div class="item-date" th:text="${#temporals.format(community.createTime,'yy.MM.dd HH:mm:ss')}"></div>
+
+            <div class="item-count">
+                <span th:text="${community.count}"></span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="btn-box" sec:authorize="isAuthenticated()">
+        <a th:href="@{/community/write}" class="btn-write">글쓰기</a>
+    </div>
+
+</div>
+
+
+<div class="paging">
+    <ul>
+        <!-- 검색결과(totalElements)가 하나도없을때  -->
+        <th:block th:if="${communityList.totalElements == 0}">
+            <li><p>검색결과가 없습니다.</p></li>
+        </th:block>
+
+        <!-- 페이지수가 1개 초과가아니면 사라지기  -->
+        <th:block th:unless="${communityList.totalElements == 0}">
+
+            <li>
+                <!-- 현재페이지가 첫페이지(0)면 span태그 // 첫페이지(0)가 아니라면 a태그(누르면 0페이지(처음))   -->
+                <span th:if="${currentPage == 0}" class="span0"> 처음 </span>
+                <span th:unless="${currentPage==0}">
+                    <a th:href="@{/community/communityList(page=0, category=${param.category}, subject=${param.subject}, search=${param.search})}"
+                       class="span1"> 처음</a>
+                </span>
+            </li>
+
+            <li>
+                <!-- 현재 페이지가 첫페이지(0)이라면 span태그 // 첫페이지(0)가 아니라면 a태그(누르면 -1페이지(이전)) -->
+                <span th:if="${currentPage == 0}" class="span0">이전</span>
+                <span th:unless="${currentPage == 0}">
+                    <a th:href="@{/community/communityList(page=${currentPage-1},category=${param.category},subject=${param.subject}, search=${param.search})}"
+                       class="span1">이전</a>
+                </span>
+            </li>
+
+            <!--
+            페이지를 for문으로 배열(#numbers)로 만들어서 보여주고,
+            현재페이지(0+1)라면 span태그
+            현재페이지(0+1)가 아니라면 a태그(누르면 해당 페이지주소로 이동)
+            -->
+            <li th:each="i: ${#numbers.sequence(startPage, endPage)}" class="block">
+                <span th:if="${i == currentPage+1}" th:text="${i}" class="now"></span>
+                <a th:unless="${i==currentPage+1}"
+                   th:href="@{/community/communityList(page=${i-1},category=${param.category} ,subject=${param.subject}, search=${param.search} )}"
+                   th:text="${i}"></a>
+            </li>
+            <li>
+                <span th:if="${currentPage+1 == communityList.totalPages}" class="span0">다음</span>
+                <span th:unless="${currentPage+1 == communityList.totalPages}">
+                    <a th:href="@{/community/communityList(page=${currentPage+1},category=${param.category} ,subject=${param.subject}, search=${param.search})}"
+                       class="span1">다음</a>
+                </span>
+            </li>
+
+            <li>
+                <span th:if="${currentPage + 1 == communityList.totalPages}" class="span0"> 마지막 </span>
+                <a th:unless="${currentPage + 1 == communityList.totalPages}"
+                   th:href="@{/community/communityList(page=${communityList.totalPages - 1},category=${param.category} ,subject=${param.subject}, search=${param.search})}"
+                   class="span1">마지막</a>
+            </li>
+        </th:block>
+
+    </ul>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // 브라우저 주소창의 쿼리 파라미터 값 추출
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentCategory = urlParams.get('category') || '';
+
+        const tabItems = document.querySelectorAll(".community-tabs .tab-item");
+
+        tabItems.forEach(tab => {
+            // 각 탭 인스턴스 주소 내의 category 변수값을 추출하여 엄격 매칭
+            const tabUrl = new URL(tab.href, window.location.origin);
+            const tabCategory = tabUrl.searchParams.get('category') || '';
+
+            if (currentCategory === tabCategory) {
+                tab.classList.add("active");
+            } else {
+                tab.classList.remove("active");
+            }
+        });
+    });
+
+</script>
+
+
+<div th:replace="~{fragments/common/footer :: footerFragment}"></div>
+
+</body>
+</html>

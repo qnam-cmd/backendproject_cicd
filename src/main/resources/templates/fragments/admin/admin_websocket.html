@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="adminWebsocketFragment">
+    <link rel="stylesheet" th:href="@{/css/admin/admin_websocket.css}">
+    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+    <!-- 웹소켓 지원하지않는 브라우저에서도 실시간 통신이 가능하게해주는 폴백(Fallback)옵션 제공 -->
+    <script th:src="@{/webjars/sockjs-client/sockjs.min.js}" defer></script>
+    <!-- 웹소켓 위에서 동작하는 프로토콜. 구조적 메시징, 메시지 형식 규격 -->
+    <script th:src="@{/webjars/stomp-websocket/stomp.min.js}" defer></script>
+    <script th:src="@{/js/admin/admin_websocket.js}" defer></script>
+
+    <div class="chat">
+        <div class="chat-bot" id="chat-bot">
+            <div class="wrap">
+                <button type="button" id="btn-chat-open" onclick="openChat()">OPEN</button>
+                <div class="chat-disp" id="chat-disp">
+                    <div class="chat-header" id="chat-header">
+                        <div><h1>Chat-Bot(WebSocket)</h1></div>
+                        <button type="button" id="close" onclick="disconnect()">X</button>
+                    </div>
+
+                    <div class="chat-content" id="chat-content"></div>
+
+                    <div class="flex-btn" id="chat-question">
+                        <input type="text" id="question" placeholder="질문을 입력하세요"/>
+                        <button type="button" id="btn-msg-send" onclick="msgSendClickFn()">전송</button>
+                        <button type="button" id="rabbit-btn-msg-send" onclick="rabbitMsgSendClickFn()">전송</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</th:block>
+
+
+</html>

@@ -1,0 +1,54 @@
+@import url(/css/common/reset.css);
+/* 좌측 메뉴 컨테이너 */
+.left {
+    width: 250px;
+    height: 100vh;
+    background-color: #2c3e50; /* 포인트 딥 네이비 */
+    color: #ffffff;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
+.left-con h1 {
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 40px;
+    color: #e67e22; /* 포인트 오렌지 */
+}
+
+.left-con ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* 메뉴 항목 공통 스타일 */
+.left-con ul li a {
+    display: block;
+    padding: 15px 30px;
+    text-decoration: none;
+    color: #bdc3c7;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.left-con ul li a:hover {
+    background-color: #34495e;
+    color: #ffffff;
+}
+
+/* 서브 메뉴 (OpenAPI 하위) 스타일 */
+.sub {
+    background-color: #1a252f;
+    display: none; /* 평소에는 숨김 */
+    padding-left: 10px;
+}
+
+.open:hover .sub {
+    display: block; /* 마우스를 올리면 표시 */
+}
+
+.sub li a {
+    font-size: 13px;
+    padding: 10px 40px !important;
+}

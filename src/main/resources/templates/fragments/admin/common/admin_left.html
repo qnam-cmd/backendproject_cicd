@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+<div class="left" th:fragment="adminLeftFragment">
+    <link rel="stylesheet" th:href="@{/css/admin/admin_left.css}">
+
+    <div class="left-con">
+        <h1 onclick="location.href='/admin'">ADMIN</h1>
+        <ul>
+            <li><a th:href="@{/admin}">HOME</a></li>
+            <li><a th:href="@{/admin/member}">회원목록</a></li>
+            <li><a th:href="@{/admin/itemList}">상품목록</a></li>
+            <li><a th:href="@{/admin/itemInsert}">상품등록</a></li>
+            <li><a th:href="@{/admin/payment}">결제목록</a></li>
+            <li><a th:href="@{/admin/orderPost}">주문처목록</a></li>
+            <li><a th:href="@{/admin/board}">공지목록</a></li>
+            <li class="open">
+                <a th:href="@{/admin/weather}">OpenAPI</a>
+                <ul class="sub">
+                    <li><a th:href="@{/admin/weather}">날씨API</a></li>
+                    <li><a th:href="@{/admin/movie}">영화API</a></li>
+                    <li><a th:href="@{/admin/bus}">버스API</a></li>
+                </ul>
+            </li>
+            <li><a th:href="@{/admin/webSocket}">Chat</a></li>
+            <li><a th:href="@{/shop/index}">SHOP</a></li>
+        </ul>
+    </div>
+</div>
+
+</html>

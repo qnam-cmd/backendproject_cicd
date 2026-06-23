@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>주문 목록 (결제 완료)</title>
+    <link rel="stylesheet" th:href="@{/css/payment/paymentList.css}">
+</head>
+<body>
+<div th:replace="~{fragments/common/header :: headerFragment}"></div>
+
+<div class="order-container">
+    <div class="order-wrap">
+
+        <!-- 페이지 상단 타이틀 및 네비게이션 단추 -->
+        <div class="order-header">
+            <h1 class="order-title">주문/배송 내역</h1>
+            <div class="nav-buttons">
+                <a th:href="@{/shop/itemList}" class="btn-nav">쇼핑 계속하기</a>
+                <a th:href="@{/}" class="btn-nav home">메인으로</a>
+            </div>
+        </div>
+
+        <div class="search">
+            <form th:action="@{/payment/paymentList}" method="GET">
+                <select name="subject" id="subject">
+                    <option value="" th:selected="${#strings.isEmpty(param.subject)}">::선택::</option>
+                    <option value="paymentType" th:selected="${#strings.equals(param.subject, 'paymentType')}">결제방식</option>
+                    <option value="orderPost" th:selected="${#strings.equals(param.subject, 'orderPost')}">주문처</option>
+                    <option value="orderAddr" th:selected="${#strings.equals(param.subject, 'orderAddr')}">배송주소</option>
+                    <option value="payResult" th:selected="${#strings.equals(param.subject, 'payResult')}">결제결과</option>
+                    <option value="orderMethod" th:selected="${#strings.equals(param.subject, 'orderMethod')}">배송방법</option>
+                </select>
+                <input type="text" name="search" id="search" th:value="${param.search}"/>
+                <input type="submit" value="검색" class="btn">
+            </form>
+        </div>
+
+
+        <!-- 주문 내역이 없을 때 -->
+        <div th:if="${paymentList == null || paymentList.isEmpty()}" class="empty-order">
+            <p>최근 주문한 내역이 없습니다.</p>
+            <a th:href="@{/item}" class="btn-shop">상품 보러가기</a>
+        </div>
+
+        <!-- 주문 마스터 리스트 -->
+        <div th:if="${paymentList != null && !paymentList.isEmpty()}" class="order-list-box">
+            <ul class="order-main-flex">
+                <th:block th:each="payment: ${paymentList}">
+                    <li class="order-master-card">
+
+                        <div class="card-top-info">
+                            <div class="order-meta">
+                                <span class="badge-status">결제완료</span>
+                                <span class="meta-text">회원 ID: <strong th:text="${payment.memberId}"></strong></span>
+                                <span class="meta-text">장바구니 No: <strong th:text="${payment.cartId}"></strong></span>
+                            </div>
+
+                            <div class="delivery-grid">
+                                <div class="deliv-item">
+                                    <span class="label">결제수단</span>
+                                    <span class="value" th:text="${payment.paymentType}">카카오페이</span>
+                                </div>
+                                <div class="deliv-item">
+                                    <span class="label">주문처</span>
+                                    <span class="value" th:text="${payment.orderPost}">상계동</span>
+                                </div>
+                                <div class="deliv-item">
+                                    <span class="label">수령방식</span>
+                                    <span class="value" th:text="${payment.orderMethod}">배달</span>
+                                </div>
+                                <div class="deliv-item full-line">
+                                    <span class="label">배송주소</span>
+                                    <span class="value address ellipsis-text" th:text="${payment.orderAddr}">서울특별시 노원구...</span>
+                                </div>
+                            </div>
+
+                            <!-- 우측 상단이나 구석에 배치될 금액 요약 -->
+                            <div class="price-summary">
+                                <span class="price-label">총 주문 금액</span>
+                                <span class="price-value"
+                                      th:text="${payment.payResult != null ? (payment.payResult.toString().contains('원') ? payment.payResult : payment.payResult + '원') : '0원'}">0원</span>
+                            </div>
+                        </div>
+
+                        <!-- [하단] 해당 주문에 속한 상세 상품 리스트 구획 -->
+                        <div class="card-bottom-items">
+                            <h3 class="item-section-title">주문 상품 정보</h3>
+                            <ul class="sub-item-list">
+                                <th:block th:each="paymentItem: ${payment.paymentItemEntities}">
+                                    <li class="sub-item-row">
+                                        <div class="item-name-box">
+                                            <span class="bullet-icon">▪</span>
+                                            <span class="item-title-name" th:text="${paymentItem.paymentItemTitle}">상품명</span>
+                                        </div>
+                                        <div class="item-option-box">
+                                            <span class="opt-size" th:text="'선택 사이즈: ' + ${paymentItem.paymentItemSize}">M</span>
+                                            <span class="opt-price"
+                                                  th:text="${paymentItem.paymentItemPrice != null ? (paymentItem.paymentItemPrice.toString().contains('원') ? paymentItem.paymentItemPrice : paymentItem.paymentItemPrice + '원') : '0원'}">0원</span>
+                                        </div>
+                                    </li>
+                                </th:block>
+                            </ul>
+                        </div>
+
+                    </li>
+                </th:block>
+            </ul>
+        </div> <!-- /order-list-box -->
+
+        <div class="paging">
+            <ul>
+                <li>
+                    <span th:if="${paymentList.pageable.pageNumber+1 eq 1}" class="span0">처음</span>
+                    <span th:unless="${paymentList.pageable.pageNumber+1 eq 1}">
+                                            <a th:href="@{/payment/paymentList(page=0, subject=${param.subject}, search=${param.search})}" class="span1">처음</a>
+                                        </span>
+                </li>
+                <li>
+                    <span th:if="${1 == paymentList.pageable.pageNumber+1}" class="span0">이전</span>
+                    <span th:unless="${1 == paymentList.pageable.pageNumber+1}">
+                                            <a th:href="@{/payment/paymentList(page=${paymentList.pageable.pageNumber - 1}, subject=${param.subject}, search=${param.search})}" class="span1">이전</a>
+                                        </span>
+                </li>
+                <!-- 페이지 번호 -->
+                <li th:each="i: ${#numbers.sequence(startPage, endPage)}" class="block">
+                                        <span th:if="${i == paymentList.pageable.pageNumber+1}" th:text="${i}"
+                                              class="now"></span>
+                    <a th:unless="${i == paymentList.pageable.pageNumber+1}"
+                       th:href="@{/payment/paymentList(page=${i - 1}, subject=${param.subject}, search=${param.search})}"
+                       th:text="${i}"></a>
+                </li>
+                <li>
+                    <span th:if="${paymentList.totalPages == paymentList.pageable.pageNumber + 1}" class="span0">다음</span>
+                    <span th:unless="${paymentList.totalPages == paymentList.pageable.pageNumber + 1}">
+                                            <a th:href="@{/payment/paymentList(page=${paymentList.pageable.pageNumber + 1}, subject=${param.subject}, search=${param.search})}" class="span1">다음</a>
+                                        </span>
+                </li>
+                <li>
+                    <span th:if="${paymentList.totalPages == paymentList.pageable.pageNumber + 1}" class="span0">마지막</span>
+                    <span th:unless="${paymentList.totalPages == paymentList.pageable.pageNumber + 1}">
+                                            <a th:href="@{/payment/paymentList(page=${paymentList.totalPages - 1}, subject=${param.subject}, search=${param.search})}" class="span1">마지막</a>
+                                        </span>
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>
+</body>
+</html>

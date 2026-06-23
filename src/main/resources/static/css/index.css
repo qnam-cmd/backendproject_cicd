@@ -1,0 +1,50 @@
+@import url(/css/common/reset.css);
+
+
+
+/* 기본 레이아웃 구성 */
+body {
+    background-color: #f9f9f9;
+    font-family: 'Pretendard', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.index {
+    width: 100%;
+    max-width: 500px;
+    background-color: #ffffff;
+    padding: 60px 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.index-con ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 링크 스타일 (포인트 컬러 적용) */
+.index-con li a {
+    display: block;
+    padding: 18px;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #2c3e50; /* 딥 네이비 */
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* 호버 효과 (포인트 오렌지 컬러) */
+.index-con li a:hover {
+    background-color: #e67e22; /* 포인트 오렌지 */
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
+}

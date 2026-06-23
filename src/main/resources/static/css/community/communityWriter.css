@@ -1,0 +1,98 @@
+@import url(/css/common/reset.css);
+
+.community-write {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 0 20px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.community-write-con {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.title h1 {
+    font-size: 28px;
+    color: #2c3e50;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #2c3e50;
+    text-align: center;
+}
+
+/* 폼 그룹 구성 */
+.form-group, .title {
+    margin-bottom: 25px;
+}
+
+.form-group label, .title label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* 입력창 및 셀렉트 박스 */
+.select-box, .input-text, .textarea-content {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 15px;
+    outline: none;
+}
+
+.textarea-content {
+    height: 300px; /* 상세 내용 입력을 위한 충분한 높이 */
+    vertical-align: top;
+    resize: vertical;
+}
+
+.input-text:focus, .select-box:focus, .textarea-content:focus {
+    border-color: #2c3e50;
+}
+
+/* 읽기 전용 입력창 */
+input[readonly] {
+    background-color: #f4f6f9;
+    color: #777;
+    cursor: not-allowed;
+}
+
+/* 버튼 영역 */
+.form-group:last-child {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.form-group a {
+    padding: 12px 30px;
+    text-decoration: none;
+    color: #555;
+    background: #f1f3f5;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.btn-submit {
+    padding: 12px 30px;
+    background: #e67e22;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-submit:hover {
+    background: #d35400;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{|https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoMapKey}|}"></script>
+        <link rel="stylesheet" th:href="@{/css/admin/admin.css}">
+
+</head>
+<body>
+<div class="admin">
+    <div class="admin-con">
+
+        <!--   왼쪽 네비게이션     -->
+        <div th:replace="~{fragments/admin/common/admin_left :: adminLeftFragment}"></div>
+
+        <!--   오른쪽(header,con)   -->
+        <div class="right">
+            <!--      오른쪽 header      -->
+            <div th:replace="~{fragments/admin/common/admin_header :: adminHeaderFragment}"></div>
+            <!--   오른쪽 con   -->
+            <div class="admin-list">
+                <th:block th:if="${key=='member'}">
+                    <div th:replace="~{fragments/admin/admin_member :: adminMemberFragment}"></div>
+                </th:block>
+                <th:block th:if="${key=='itemInsert'}">
+                    <div th:replace="~{fragments/admin/admin_itemInsert :: adminItemInsertFragment}"></div>
+                </th:block>
+                <th:block th:if="${key=='itemList'}">
+                    <div th:replace="~{fragments/admin/admin_itemList :: adminItemListFragment}"></div>
+                </th:block>
+                <th:block th:if="${key=='itemDetail'}">
+                    <div th:replace="~{fragments/admin/admin_itemDetail :: adminItemDetailFragment}"></div>
+                </th:block>
+                <th:block th:if="${key=='movie'}">
+                    <div th:replace="~{fragments/admin/admin_movie :: adminMovieFragment}"></div>
+                </th:block>
+                <th:block th:if="${key=='weather'}">
+                    <div th:replace="~{fragments/admin/admin_weather :: adminWeatherFragment}"></div>
+                </th:block>
+                <th:block th:if="${key=='bus'}">
+                    <div th:replace="~{fragments/admin/admin_bus :: adminBusFragment}"></div>
+                </th:block>
+                <th:block th:if="${key=='webSocket'}">
+                    <div th:replace="~{fragments/admin/admin_websocket :: adminWebsocketFragment}"></div>
+                </th:block>
+                <th:block th:if="${key=='payment'}">
+                    <div th:replace="~{fragments/admin/admin_payment :: adminPaymentFragment}"></div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

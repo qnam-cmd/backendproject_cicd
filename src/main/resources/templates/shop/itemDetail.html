@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 상세정보</title>
+    <script th:src="@{/js/shop/itemDetail.js}" defer></script>
+    <link rel="stylesheet" th:href="@{/css/shop/itemDetail.css}">
+    <script th:src="@{/js/shop/itemReply.js}" defer></script>
+
+</head>
+<body>
+<div th:replace="~{fragments/common/header :: headerFragment}"></div>
+
+<h1>상품 상세</h1>
+<div class="itemDetail">
+    <div class="itemDetail-con">
+        <div class="itemDetail-con-top">
+            <h1 th:text="${item.itemTitle}"></h1>
+
+            <div class="left">
+
+                <div class="item-img">
+                    <th:block th:if="${item.attachFile==1}">
+                        <img th:src="@{|/full/upload/backend/item/${item.newFileName}|}" alt="상품이미지">
+                    </th:block>
+                    <th:block th:unless="${item.attachFile==1}">
+                        <img src="https://placehold.co/400x250/cccccc/ffffff?text=ITEM" alt="상품 이미지">
+                    </th:block>
+                </div>
+            </div>
+
+            <div class="right">
+                <form th:action="@{/shop/insert/addCart0}" method="post">
+                <ul>
+                    <li>
+                        <label for="id">상품(ID)</label>
+                        <input type="text" name="id" id="id" th:value="${item.id}" readonly>
+                    </li>
+                    <li>
+                        <label for="itemTitle">상품명</label>
+                        <input type="text" name="itemTitle" id="itemTitle" th:value="${item.itemTitle}">
+                    </li>
+                    <li>
+                        <label for="itemDetail">상품 설명</label>
+                        <input type="text" name="itemDetail" id="itemDetail" th:value="${item.itemDetail}">
+                    </li>
+                    <li>
+                        <label for="itemPrice">상품 가격</label>
+                        <div class="price-input-group">
+                            <input type="text" name="itemPrice" id="itemPrice" th:value="${item.itemPrice}" readonly>
+                            <span class="item-price" th:text="${#numbers.formatInteger(item.itemPrice, 0, 'COMMA')} + '원'">0원</span>
+                        </div>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <label for="memberId">상품등록 회원(ID)</label>
+                        <input type="text" name="memberId" id="memberId" th:value="${item.memberId}" readonly>
+                    </li>
+                    <li>
+                        <label for="itemSize">상품 수량</label>
+                        <input type="number" name="itemSize" id="itemSize" th:value="${item.itemSize}">
+                    </li>
+                    <li>
+                        <label for="createTime">생성 날짜</label>
+                        <span th:text="${#temporals.format(item.createTime, 'yyyy.MM.dd HH:mm')}"
+                              id="createTime"></span>
+                    </li>
+                    <li>
+                        <label for="updateTime">수정 날짜</label>
+                        <span th:text="${#temporals.format(item.updateTime, 'yyyy.MM.dd HH:mm')}"
+                              id="updateTime"></span>
+                    </li>
+                    <li>
+                        <label>합계금액: </label>
+                        <span id="total" class="total"></span>
+                    </li>
+                    <li sec:authorize="isAnonymous()">
+                        <a th:href="@{/shop/itemList}">상품목록</a>
+                        <p style="color: red; font-size: 14px;">장바구니 기능은 <a th:href="@{/member/login}" style="color: blue">로그인</a> 후 이용 가능합니다.</p>
+                    </li>
+                    <li sec:authorize="isAuthenticated()">
+                        <input type="submit" value="장바구니0(Form)">
+                        <button type="button" onclick="cartFn(event)">장바구니(비동기)</button>
+                        <a th:href="@{/shop/insert/memberId/{memberId}/id/{id}(memberId=${#authentication.principal.memberEntity.id}, id=${item.id})}">장바구니2(Link)</a>
+                    </li>
+                </ul>
+                </form>
+            </div>
+        </div>
+        <div class="itemDetail-con-bottom">
+            <div class="itemReply">
+                <div class="itemReply-con">
+                    <h3>댓글 <span class="itemReply-count"></span></h3>
+                    <!--로그인한 경우에만 작성가능-->
+                    <input type="hidden" id="replyItemId" th:value="${item.id}">
+                    <div class="itemReply-writer" sec:authorize="isAuthenticated()">
+                        <div class="itemReply-writer-info">
+                            <!-- 회원만작성가능 -->
+                            <label for="itemReplyWriter">작성자</label>
+                            <input type="text" id="itemReplyWriter"
+                                   th:value="${#authentication.principal.memberEntity.userName}" readonly>
+                            <label for="itemReplyPw">비밀번호</label>
+                            <input type="password" id="itemReplyPw" placeholder="비밀번호(필수)">
+                        </div>
+                        <label for="itemReplyContent"></label><textarea id="itemReplyContent"
+                                                                        placeholder="댓글을 입력하세요."></textarea>
+                        <button type="button" onclick="saveItemReplyFn()">작성</button>
+                    </div>
+                    <!--비로그인시 안내-->
+                    <div class="itemReply-writer" sec:authorize="isAnonymous()">
+                        <p style="color: red; font-size: 14px;">댓글을 작성하려면 <a th:href="@{/member/login}"
+                                                                             style="color: blue">로그인</a>이 필요합니다.</p>
+                    </div>
+                </div>
+            </div>
+            <!--    댓글목록    -->
+            <div id="itemReplyList" class="itemReply-list"></div>
+        </div>
+
+    </div>
+</div>
+
+<div th:replace="~{fragments/common/footer :: footerFragment}"></div>
+</body>
+</html>

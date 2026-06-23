@@ -1,0 +1,158 @@
+@import url(/css/common/reset.css);
+@import url(/css/common/reset.css);
+
+/* 전체 컨테이너 */
+.order-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+/* 상단 헤더 및 버튼 정렬 */
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #2c3e50;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.order-title {
+    font-size: 28px;
+    color: #2c3e50;
+    font-weight: 700;
+}
+
+/* 버튼 규격 통일 (크기 및 행렬 맞춤) */
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-nav, .btn-shop {
+    display: inline-flex; /* 텍스트 중앙 정렬 및 높이 맞춤 */
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    height: 45px; /* 모든 버튼의 높이를 45px로 고정 */
+    box-sizing: border-box;
+}
+
+.btn-nav { background-color: #f8f9fa; color: #555; border: 1px solid #ddd; }
+.btn-nav:hover { background-color: #e9ecef; }
+.btn-nav.home { background-color: #2c3e50; color: #fff; border: none; }
+.btn-nav.home:hover { background-color: #1a252f; }
+
+/* 주문 내역 카드 */
+.order-master-card {
+    background: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    overflow: hidden;
+}
+
+/* 카드 상단: 결제 정보 */
+.card-top-info {
+    padding: 25px;
+    background: #fdfdfd;
+    border-bottom: 1px solid #eee;
+}
+
+.order-meta {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.badge-status {
+    background: #e67e22;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* 배송 정보 그리드 */
+.delivery-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #f0f0f0;
+}
+
+.deliv-item { display: flex; font-size: 14px; }
+.deliv-item .label { color: #7f8c8d; width: 80px; font-weight: 600; }
+.deliv-item .value { color: #333; font-weight: 500; }
+.full-line { grid-column: 1 / -1; }
+
+/* 금액 요약 (우측 정렬) */
+.price-summary {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #ddd;
+}
+
+.price-label { font-size: 16px; color: #555; font-weight: 600; }
+.price-value { font-size: 24px; font-weight: 700; color: #e67e22; }
+
+/* 카드 하단: 상세 상품 목록 */
+.card-bottom-items { padding: 25px; }
+.item-section-title { font-size: 16px; margin-bottom: 15px; color: #2c3e50; font-weight: 700; }
+.sub-item-list { list-style: none; padding: 0; }
+.sub-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f9f9f9;
+}
+.sub-item-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+.item-name-box { color: #333; font-weight: 500; }
+.bullet-icon { color: #e67e22; margin-right: 8px; }
+.item-option-box { display: flex; gap: 20px; font-size: 14px; color: #555; }
+.opt-price { font-weight: 700; color: #2c3e50; }
+
+
+
+
+/* 페이징 영역 (기존 스타일 계승) */
+.paging ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    gap: 5px;
+}
+
+.paging li a, .paging li span {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    color: #555;
+    border-radius: 4px;
+}
+
+.paging .now {
+    background-color: #e67e22;
+    color: white;
+    border-color: #e67e22;
+}

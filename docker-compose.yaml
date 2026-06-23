@@ -1,0 +1,80 @@
+#version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: backprojectdb
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - spring-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=${SPRING_RABBITMQ_USERNAME}
+      - RABBITMQ_DEFAULT_PASS=${SPRING_RABBITMQ_PASSWORD}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - spring-network
+
+  backendprojectex:
+    build: .
+    image: backendprojectex:latest
+    container_name: backendprojectex
+    restart: always
+    ports:
+      - "8094:8094"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    networks:
+      - spring-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/backprojectdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=${SPRING_RABBITMQ_USERNAME}
+      - SPRING_RABBITMQ_PASSWORD=${SPRING_RABBITMQ_PASSWORD}
+      - ITEM_UPLOAD_PATH=/app/uploads/item/
+      - BOARD_UPLOAD_PATH=/app/uploads/board/
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - NAVER_CLIENT_ID=${NAVER_CLIENT_ID}
+      - NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET}
+      - KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID}
+      - KAKAO_CLIENT_SECRET=${KAKAO_CLIENT_SECRET}
+      - KAKAO_MAP_APPKEY=${KAKAO_MAP_APPKEY}
+      - KAKAO_REST_API_KEY=${KAKAO_REST_API_KEY}
+      - OPENWEATHER_SERVICE_KEY=${OPENWEATHER_SERVICE_KEY}
+      - KOBIS_SERVICE_KEY=${KOBIS_SERVICE_KEY}
+      - BUS_SERVICE_KEY=${BUS_SERVICE_KEY}
+    volumes:
+      - ./uploads:/app/uploads
+
+volumes:
+  mysql-data:
+  rabbitmq-data:
+
+networks:
+  spring-network:
+    driver: bridge

@@ -1,0 +1,254 @@
+@import url(/css/common/reset.css);
+
+/* 전체 컨테이너 규격 설정 */
+.itemDetail {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+/* 외부의 불필요한 h1 숨김 처리 (디자인 통일성을 위해 내부 제목 사용 권장) */
+body > h1:first-of-type {
+    display: none;
+}
+
+/* =========================================
+   상단: 상품 이미지 & 정보 영역 (2단 분리)
+========================================= */
+.itemDetail-con-top {
+    display: flex;
+    gap: 50px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+/* 좌측 상품 이미지 영역 */
+.itemDetail-con-top .left {
+    flex: 1;
+    max-width: 500px;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02);
+}
+
+.item-img {
+    width: 100%;
+    aspect-ratio: 4 / 5; /* 상품 목록과 동일한 비율 적용 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 이미지가 잘리지 않게 비율 유지 */
+}
+
+/* 우측 상품 정보 및 주문 폼 영역 */
+.itemDetail-con-top .right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.itemDetail-con-top .right h1 {
+    font-size: 32px;
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #2c3e50;
+}
+
+.right ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* 모든 li 내부의 정렬을 강제 보정 */
+.right li {
+    display: flex;
+    align-items: center; /* 수직 중앙 정렬 */
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f8f9fa;
+    min-height: 50px; /* 줄 높이 확보 */
+}
+
+.right label {
+    width: 150px;
+    font-weight: 600;
+    color: #555;
+    font-size: 15px;
+}
+
+.right input[type="text"],
+.right input[type="number"] {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.right input:focus {
+    border-color: #2c3e50;
+}
+
+/* 읽기 전용 입력창(ID, 생성일 등) 디자인 차별화 */
+.right input[readonly] {
+    background-color: #f9f9f9;
+    color: #7f8c8d;
+    border-color: #eee;
+    cursor: not-allowed;
+}
+
+/* 가격 및 합계 강조 */
+/* 가격과 합계 줄 맞춤을 위한 CSS */
+.price-input-group {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 상품 가격 옆의 텍스트도 input과 높이/정렬을 맞춤 */
+.item-price {
+    font-weight: 700;
+    color: #e67e22;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+/* 합계 금액 span이 label과 나란히 위치하도록 설정 */
+#total {
+    flex: 1; /* label을 제외한 나머지 공간 차지 */
+    font-weight: 700;
+    color: #e67e22;
+    font-size: 20px;
+    padding: 0 12px; /* input과 여백 맞춤 */
+}
+
+
+
+/* 액션 버튼 그룹 (장바구니 3개 크기 및 정렬 통일) */
+.right li:last-child {
+    display: flex;
+    gap: 10px;
+    border-bottom: none;
+    margin-top: 20px;
+    padding-bottom: 0;
+}
+
+.right input[type="submit"],
+.right button,
+.right a {
+    flex: 1; /* 3개의 버튼이 너비를 정확히 1:1:1로 나누어 가짐 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px; /* 높이를 명확하게 고정 */
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    box-sizing: border-box;
+    transition: all 0.2s;
+}
+
+/* 각각의 버튼 색상 확실하게 구분 */
+.right input[type="submit"] {
+    background-color: #ffffff;
+    color: #2c3e50;
+    border: 1px solid #2c3e50;
+}
+.right input[type="submit"]:hover { background-color: #f4f6f7; }
+
+.right button {
+    background-color: #e67e22; /* 포인트 오렌지 */
+    color: #ffffff;
+}
+.right button:hover { background-color: #d35400; }
+
+.right a {
+    background-color: #2c3e50; /* 딥 네이비 */
+    color: #ffffff;
+}
+.right a:hover { background-color: #1a252f; }
+
+
+
+/* =========================================
+   하단: 댓글(리뷰) 영역 디자인
+========================================= */
+.itemDetail-con-bottom {
+    margin-top: 20px; /* 위쪽(상세정보)과의 간격 추가 */
+    border-top: 2px solid #2c3e50;
+    padding-top: 20px;
+}
+
+.itemReply-con h3 {
+    font-size: 22px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.itemReply-count { color: #e67e22; }
+
+/* 댓글 작성 폼 박스 */
+.itemReply-writer {
+    background-color: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 40px;
+    border: 1px solid #eee;
+}
+
+.itemReply-writer-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.itemReply-writer-info label {
+    font-weight: 600; font-size: 14px; color: #555;
+}
+
+.itemReply-writer-info input {
+    padding: 10px; border: 1px solid #ddd; border-radius: 6px; outline: none;
+}
+
+#itemReplyContent {
+    width: 100%; height: 100px; padding: 15px; border: 1px solid #ddd;
+    border-radius: 8px; resize: none; font-family: inherit; box-sizing: border-box;
+}
+
+.itemReply-writer button {
+    align-self: flex-end; padding: 12px 30px; background-color: #2c3e50;
+    color: #ffffff; border: none; border-radius: 6px; font-weight: 600;
+    cursor: pointer; transition: 0.2s;
+}
+
+.itemReply-writer button:hover { background-color: #1a252f; }
+
+/* 작성된 댓글 목록 */
+.itemReply-list { display: flex; flex-direction: column; gap: 15px; }
+.reply-item {
+    padding: 20px; border: 1px solid #f0f0f0; background-color: #ffffff; border-radius: 8px;
+}
+.reply-top p { font-weight: 700; color: #333; margin-bottom: 10px; }
+.reply-content p { color: #555; line-height: 1.6; font-size: 15px; }

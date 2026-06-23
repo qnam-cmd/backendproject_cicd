@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="adminPaymentFragment">
+    <link rel="stylesheet" th:href="@{/css/admin/admin_payment.css}">
+
+    <div class="payment">
+        <div class="payment-con">
+            <div class="title"><h1>PAYMENT</h1></div>
+            <div class="search">
+                <form th:action="@{/admin/payment}" method="GET">
+                    <select name="subject" id="subject">
+                        <option value="" th:selected="${#strings.isEmpty(param.subject)}">::선택::</option>
+                        <option value="paymentType" th:selected="${#strings.equals(param.subject, 'paymentType')}">결제방식</option>
+                        <option value="orderPost" th:selected="${#strings.equals(param.subject, 'orderPost')}">주문처</option>
+                        <option value="orderAddr" th:selected="${#strings.equals(param.subject, 'orderAddr')}">배송주소</option>
+                        <option value="payResult" th:selected="${#strings.equals(param.subject, 'payResult')}">결제결과</option>
+                        <option value="orderMethod" th:selected="${#strings.equals(param.subject, 'orderMethod')}">배송방법</option>
+                    </select>
+                    <input type="text" name="search" id="search" th:value="${param.search}"/>
+                    <input type="submit" value="검색" class="btn">
+                </form>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>paymentType</th>
+                    <th>orderPost</th>
+                    <th>orderAddr</th>
+                    <th>memberId</th>
+                    <th>payResult</th>
+                    <th>orderMethod</th>
+                    <th>createTime</th>
+                    <th>updateTime</th>
+                    <th>paymentItemEntities</th>
+                    <th>보기</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="payment: ${paymentList2}">
+                    <td th:text="${payment.id}" class="paymentId"></td>
+                    <td th:text="${payment.paymentType}" class="paymentType"></td>
+                    <td th:text="${payment.orderPost}" class="orderPost"></td>
+                    <td th:text="${payment.orderAddr}" class="orderAddr"></td>
+                    <td th:text="${payment.memberId}" class="memberId"></td>
+                    <td th:text="${payment.payResult}" class="payResult"></td>
+                    <td th:text="${payment.orderMethod}" class="orderMethod"></td>
+                    <td th:text="${#temporals.format(payment.createTime, 'yyyy-MM-dd HH:mm-ss')}"></td>
+                    <td th:text="${#temporals.format(payment.updateTime, 'yyyy-MM-dd HH:mm-ss')}"></td>
+                    <td>
+                        <div class="paymentItemEntities">
+                            <th:block th:each="item: ${payment.paymentItemEntities}">
+                                <div class="item-badge">
+                                    <span th:text="${item.id}"></span>
+                                    <span th:text="${item.paymentItemTitle}"></span>
+                                    <span th:text="${item.paymentItemPrice}"></span>
+                                    <span th:text="${item.paymentItemSize}"></span>
+                                </div>
+                            </th:block>
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button" class="btn-view" onclick="openModal(event)">보기</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="modal">
+                <div class="modal-con">
+
+                    <div class="modal-header">
+                        <h3>결제 상세내역</h3>
+                        <span class="close-btn" onclick="closeModal(event)">X</span>
+                    </div>
+                    <div class="modal-payment">
+                        <div class="modal-paymentId"><span class="modal-label">ID</span> <span
+                                class="modal-paymentId2"></span></div>
+                        <div class="modal-memberId"><span class="modal-label">회원아이디</span><span
+                                class="modal-memberId2"></span></div>
+                        <div class="modal-paymentType"><span class="modal-label">결제방법</span><span
+                                class="modal-paymentType2"></span></div>
+                        <div class="modal-orderPost"><span class="modal-label">주문처</span> <span
+                                class="modal-orderPost2"></span></div>
+                        <div class="modal-orderAddr"><span class="modal-label">배송주소</span> <span
+                                class="modal-orderAddr2"></span></div>
+                        <div class="modal-payResult"><span class="modal-label">결제금액</span> <span
+                                class="modal-payResult2"></span></div>
+                        <div class="modal-orderMethod"><span class="modal-label">배송방법</span> <span
+                                class="modal-orderMethod2"></span></div>
+                        <div class="modal-createTime"><span class="modal-label">결제시간</span> <span
+                                class="modal-createTime2"></span></div>
+
+                        <div class="modal-paymentItemEntities">
+                            결제상품
+                            <div class="modal-item-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="paging">
+            <ul>
+                <li>
+                    <span th:if="${paymentList2.pageable.pageNumber+1 eq 1}" class="span0">처음</span>
+                    <span th:unless="${paymentList2.pageable.pageNumber+1 eq 1}">
+                                            <a th:href="@{/admin/payment(page=0, subject=${param.subject}, search=${param.search})}" class="span1">처음</a>
+                                        </span>
+                </li>
+                <li>
+                    <span th:if="${1 == paymentList2.pageable.pageNumber+1}" class="span0">이전</span>
+                    <span th:unless="${1 == paymentList2.pageable.pageNumber+1}">
+                                            <a th:href="@{/admin/payment(page=${paymentList2.pageable.pageNumber - 1}, subject=${param.subject}, search=${param.search})}" class="span1">이전</a>
+                                        </span>
+                </li>
+                <!-- 페이지 번호 -->
+                <li th:each="i: ${#numbers.sequence(startPage, endPage)}" class="block">
+                                        <span th:if="${i == paymentList2.pageable.pageNumber+1}" th:text="${i}"
+                                              class="now"></span>
+                    <a th:unless="${i == paymentList2.pageable.pageNumber+1}"
+                       th:href="@{/admin/payment(page=${i - 1}, subject=${param.subject}, search=${param.search})}"
+                       th:text="${i}"></a>
+                </li>
+                <li>
+                    <span th:if="${paymentList2.totalPages == paymentList2.pageable.pageNumber + 1}" class="span0">다음</span>
+                    <span th:unless="${paymentList2.totalPages == paymentList2.pageable.pageNumber + 1}">
+                                            <a th:href="@{/admin/payment(page=${paymentList2.pageable.pageNumber + 1}, subject=${param.subject}, search=${param.search})}" class="span1">다음</a>
+                                        </span>
+                </li>
+                <li>
+                    <span th:if="${paymentList2.totalPages == paymentList2.pageable.pageNumber + 1}" class="span0">마지막</span>
+                    <span th:unless="${paymentList2.totalPages == paymentList2.pageable.pageNumber + 1}">
+                                            <a th:href="@{/admin/payment(page=${paymentList2.totalPages - 1}, subject=${param.subject}, search=${param.search})}" class="span1">마지막</a>
+                                        </span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script th:src="@{/js/admin/admin_payment.js}"></script>
+
+
+</th:block>
+
+</html>

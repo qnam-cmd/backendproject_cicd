@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>장바구니 목록</title>
+    <link rel="stylesheet" th:href="@{/css/shop/cartList.css}">
+
+</head>
+<body>
+<div th:replace="~{fragments/common/header :: headerFragment}"></div>
+
+<div class="cart-container">
+    <div class="cart-con">
+        <h1 class="cart-title">장바구니 목록</h1>
+
+        <!-- 장바구니 비어있을 때 처리 -->
+        <div th:if="${itemList.isEmpty()}" class="empty-cart">
+            <p>장바구니가 비어 있습니다.</p>
+            <a th:href="@{/shop/itemList}" class="btn-shop">쇼핑하러 가기</a>
+        </div>
+
+        <!-- [변경] itemList 스타일을 참조한 카드형 그리드 레이아웃 -->
+        <div th:if="${!itemList.isEmpty()}">
+            <ul class="cart-grid">
+                <th:block th:each="item: ${itemList}">
+                    <li class="cart-item-card">
+                        <!-- 상단: 상품 기본 정보 및 이미지 영역(대체) -->
+                        <div class="card-top">
+                            <span class="item-id-badge" th:text="'No.' + ${item.id}"></span>
+                            <h2 th:text="${item.itemEntity.itemTitle}">상품명</h2>
+                            <p class="item-detail" th:text="${item.itemEntity.itemDetail}">상품 상세 설명</p>
+                            <div class="detail-image">
+                                <th:block th:if="${item.newFileName != null}">
+                                    <img th:src="@{|/full/upload/backend/item/${item.newFileName}|}" alt="상품이미지">
+                                </th:block>
+                            </div>
+                        </div>
+
+                        <!-- 중간: 선택 옵션 정보 (사이즈 등) -->
+                        <div class="card-mid">
+                            <div class="info-row">
+                                <span class="info-label">상품 갯수:</span>
+                                <span class="info-value highlight" th:text="${item.itemSize}">M</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">담은 날짜:</span>
+                                <span class="info-value date" th:text="${#strings.substring(item.createTime, 0, 10)}">2026-05-20</span>
+                            </div>
+                        </div>
+
+                        <!-- 하단: 가격 정보 및 상세 이동 -->
+                        <div class="card-bottom">
+                            <div class="price-area">
+                                <span class="price-label">가격</span>
+                                <span class="item-price" th:text="${#numbers.formatInteger(item.itemEntity.itemPrice, 0, 'COMMA')} + '원'">0원</span>
+                            </div>
+                            <a th:href="@{/shop/detail/{id}(id=${item.itemEntity.id})}" class="btn-detail">
+                                상품 상세 보기
+                            </a>
+                        </div>
+                    </li>
+                </th:block>
+            </ul>
+
+            <!-- 하단 글로벌 액션바 (쇼핑 계속하기 & 결제하기) -->
+            <div class="cart-summary-bar">
+                <div class="summary-left">
+                    <a th:href="@{/shop/itemList}" class="btn-continue">← 쇼핑 계속하기</a>
+                </div>
+                <div class="summary-right">
+                    <!-- 첫 번째 아이템을 기준으로 멤버 ID를 추출하여 결제 페이지 이동 -->
+<!--                    <a th:href="@{/payment/{memberId}(memberId=${itemList.get(0).cartEntity.memberEntity.id})}" class="btn-pay">-->
+                    <a th:href="@{/payment}" class="btn-pay">
+                        선택 상품 결제하기
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div th:replace="~{fragments/common/footer :: footerFragment}"></div>
+
+</body>
+</html>

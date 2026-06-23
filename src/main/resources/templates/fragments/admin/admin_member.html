@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="adminMemberFragment">
+    <link rel="stylesheet" th:href="@{/css/admin/admin_member.css}">
+    <div class="title"><h1>회원목록</h1></div>
+    <div class="member">
+        <div class="member-con">
+
+            <div class="search">
+                <h3>회원목록 </h3>
+                <form th:action="@{/admin/member}" method="get">
+                    <select name="subject" id="subject">
+                        <option value="" th:selected="${#strings.isEmpty( param.subject )}">::선택::</option>
+                        <option value="userEmail" th:selected="${#strings.equals( param.subject, 'userEmail' )}">이메일
+                        </option>
+                        <option value="userName" th:selected="${#strings.equals( param.subject, 'userName' )}">이름
+                        </option>
+                        <option value="role" th:selected="${#strings.equals( param.subject, 'role' )}">ROLE</option>
+                    </select>
+                    <input type="text" name="search" id="search" th:value="${param.search}"/>
+                    <input type="submit" value="검색" class="btn"/>
+                </form>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>이메일</th>
+                        <th>비밀번호</th>
+                        <th>이름</th>
+                        <th>ROLE</th>
+                        <th>가입시간</th>
+                        <th>수정시간</th>
+                        <th>보기</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="member: ${memberList}">
+                        <tr>
+                            <td th:text="${member.id}"></td>
+                            <td th:text="${member.userEmail}"></td>
+                            <td th:text="${member.userPw}"></td>
+                            <td th:text="${member.userName}"></td>
+                            <td th:text="${member.role}"></td>
+                            <td th:text="${#temporals.format(member.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td th:text="${#temporals.format(member.updateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td><button th:onclick="memberDetailFn(event,[[${member.id}]])">보기</button></td>
+                        </tr>
+                    </th:block>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="11">
+                            <div class="paging">
+                                <ul>
+                                    <li>
+                                        <span th:if="${memberList.pageable.pageNumber+1 eq 1}" class="span0">처음</span>
+                                        <span th:unless="${memberList.pageable.pageNumber+1 eq 1}">
+                                            <a th:href="@{/admin/member(page=0, subject=${param.subject}, search=${param.search})}" class="span1">처음</a>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span th:if="${1 == memberList.pageable.pageNumber+1}" class="span0">이전</span>
+                                        <span th:unless="${1 == memberList.pageable.pageNumber+1}">
+                                            <a th:href="@{/admin/member(page=${memberList.pageable.pageNumber - 1}, subject=${param.subject}, search=${param.search})}" class="span1">이전</a>
+                                        </span>
+                                    </li>
+                                    <!-- 페이지 번호 -->
+                                    <li th:each="i: ${#numbers.sequence(startPage, endPage)}" class="block">
+                                        <span th:if="${i == memberList.pageable.pageNumber+1}" th:text="${i}"
+                                              class="now"></span>
+                                        <a th:unless="${i == memberList.pageable.pageNumber+1}"
+                                           th:href="@{/admin/member(page=${i - 1}, subject=${param.subject}, search=${param.search})}"
+                                           th:text="${i}"></a>
+                                    </li>
+                                    <li>
+                                        <span th:if="${memberList.totalPages == memberList.pageable.pageNumber + 1}" class="span0">다음</span>
+                                        <span th:unless="${memberList.totalPages == memberList.pageable.pageNumber + 1}">
+                                            <a th:href="@{/admin/member(page=${memberList.pageable.pageNumber + 1}, subject=${param.subject}, search=${param.search})}" class="span1">다음</a>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span th:if="${memberList.totalPages == memberList.pageable.pageNumber + 1}" class="span0">마지막</span>
+                                        <span th:unless="${memberList.totalPages == memberList.pageable.pageNumber + 1}">
+                                            <a th:href="@{/admin/member(page=${memberList.totalPages - 1}, subject=${param.subject}, search=${param.search})}" class="span1">마지막</a>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="member_modal">
+        <div class="member_modal-con">
+            <span class="close" onclick="closeFn0()">X</span>
+            <ul>
+                <li><span class="label">ID</span><span class="userId2 value"></span></li>
+                <li><span class="label">이메일</span><span class="userEmail2 value"></span></li>
+                <li><span class="label">비밀번호</span><span class="userPw2 value"></span></li>
+                <li><span class="label">이름</span><span class="userName2 value"></span></li>
+                <li><span class="label">ROLE</span><span class="role2 value"></span></li>
+                <li><span class="label">가입일</span><span class="createTime2 value"></span></li>
+            </ul>
+        </div>
+    </div>
+    <script th:src="@{/js/admin/admin_member.js}" defer></script>
+</th:block>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="adminItemListFragment">
+    <link rel="stylesheet" th:href="@{/css/admin/admin_itemList.css}">
+    <div class="title"><h1>상품목록</h1></div>
+    <div class="itemList">
+        <div class="itemList-con">
+            <div class="itemList-search">
+                <form th:action="@{/admin/itemList}" method="GET">
+                    <select name="subject">
+                        <option value="" th:selected="${param.subject == null or param.subject[0] == ''}">::선택::
+                        </option>
+                        <option value="itemTitle"
+                                th:selected="${param.subject != null and param.subject[0] == 'title'}">제목
+                        </option>
+                        <option value="itemDetail"
+                                th:selected="${param.subject != null and param.subject[0] == 'content'}">내용
+                        </option>
+                    </select>
+                    <input type="text" name="search" th:value="${param.search}">
+                    <input type="submit" value="검색">
+                </form>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <td>상품(ID)</td>
+                    <td>상품명</td>
+                    <td>상품설명</td>
+                    <td>상품가격</td>
+                    <td>회원(ID)</td>
+                    <td>상품수량</td>
+                    <td>등록날짜</td>
+                    <td>수정날짜</td>
+                    <td>이미지</td>
+                    <td>상세보기</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item:${itemList}">
+                    <td th:text="${item.id}"></td>
+                    <td th:text="${item.itemTitle}"></td>
+                    <td th:text="${item.itemDetail}"></td>
+                    <td th:text="${item.itemPrice}"></td>
+                    <td th:text="${item.memberId}"></td>
+                    <td th:text="${item.itemSize}"></td>
+                    <td th:text="${#temporals.format(item.createTime, 'yyyy.MM.dd HH:mm')}"></td>
+                    <td th:text="${#temporals.format(item.updateTime, 'yyyy.MM.dd HH:mm')}"></td>
+                    <td>
+                        <th:block th:if="${item.attachFile==1}">O</th:block>
+                        <th:block th:unless="${item.attachFile==1}">X</th:block>
+                    </td>
+                    <td>
+                        <a th:href="@{/admin/item/detail/{id}(id=${item.id})}">
+                            <span th:text="${item.itemTitle}"></span>
+                        </a>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="paging">
+            <ul>
+                <!-- 검색결과(totalElements)가 하나도없을때  -->
+                <th:block th:if="${itemList.totalElements == 0}">
+                    <li><p>검색결과가 없습니다.</p></li>
+                </th:block>
+
+                <!-- 페이지수가 1개 초과가아니면 사라지기  -->
+                <th:block th:unless="${itemList.totalElements == 0}">
+
+                    <li>
+                        <!-- 현재페이지가 첫페이지(0)면 span태그 // 첫페이지(0)가 아니라면 a태그(누르면 0페이지(처음))   -->
+                        <span th:if="${currentPage == 0}" class="span0"> 처음 </span>
+                        <span th:unless="${currentPage==0}">
+                            <a th:href="@{/admin/itemList(page=0,subject=${param.subject}, search=${param.search})}"
+                            class="span1"> 처음</a>
+                        </span>
+                    </li>
+
+                    <li>
+                        <!-- 현재 페이지가 첫페이지(0)이라면 span태그 // 첫페이지(0)가 아니라면 a태그(누르면 -1페이지(이전)) -->
+                        <span th:if="${currentPage == 0}" class="span0">이전</span>
+                        <span th:unless="${currentPage == 0}">
+                            <a th:href="@{/admin/itemList(page=${currentPage-1},subject=${param.subject}, search=${param.search})}"
+                            class="span1">이전</a>
+                        </span>
+
+                        <!--
+                        페이지를 for문으로 배열(#numbers)로 만들어서 보여주고,
+                        현재페이지(0+1)라면 span태그
+                        현재페이지(0+1)가 아니라면 a태그(누르면 해당 페이지주소로 이동)
+                        -->
+                    <li th:each="i: ${#numbers.sequence(startPage, endPage)}" class="block">
+                        <span th:if="${i == currentPage+1}" th:text="${i}" class="now"></span>
+                        <a th:unless="${i==currentPage+1}"
+                           th:href="@{/admin/itemList(page=${i-1}, subject=${param.subject}, search=${param.search} )}"
+                           th:text="${i}"></a>
+                    </li>
+                    <li>
+                        <span th:if="${currentPage+1 == itemList.totalPages}" class="span0">다음</span>
+                        <span th:unless="${currentPage+1 == itemList.totalPages}">
+                            <a th:href="@{/admin/itemList(page=${currentPage+1}, subject=${param.subject}, search=${param.search})}" class="span1">다음</a>
+                        </span>
+                    </li>
+
+                    <li>
+                        <span th:if="${currentPage + 1 == itemList.totalPages}" class="span0"> 마지막 </span>
+                        <a th:unless="${currentPage + 1 == itemList.totalPages}"
+                           th:href="@{/admin/itemList(page=${itemList.totalPages - 1}, subject=${param.subject}, search=${param.search})}"
+                           class="span1">마지막</a>
+                    </li>
+                </th:block>
+
+            </ul>
+        </div>
+    </div>
+
+</th:block>
+</html>

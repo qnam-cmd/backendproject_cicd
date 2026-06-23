@@ -1,0 +1,49 @@
+name: Deploy to AWS EC2 with Docker
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Execute remote SSH commands to deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ec2-user/app
+            
+            # 1. .env 파일 생성 (환경 변수들을 파일로 저장)
+            cat <<EOF > .env
+            MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
+            SPRING_RABBITMQ_USERNAME=${{ secrets.SPRING_RABBITMQ_USERNAME }}
+            SPRING_RABBITMQ_PASSWORD=${{ secrets.SPRING_RABBITMQ_PASSWORD }}
+            GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+            GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+            NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}
+            NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}
+            KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}
+            KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }}
+            KAKAO_MAP_APPKEY=${{ secrets.KAKAO_MAP_APPKEY }}
+            KAKAO_REST_API_KEY=${{ secrets.KAKAO_REST_API_KEY }}
+            OPENWEATHER_SERVICE_KEY=${{ secrets.OPENWEATHER_SERVICE_KEY }}
+            KOBIS_SERVICE_KEY=${{ secrets.KOBIS_SERVICE_KEY }}
+            BUS_SERVICE_KEY=${{ secrets.BUS_SERVICE_KEY }}
+            SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+
+            
+            # 2. 권한 설정 및 도커 컴포즈 실행
+            chmod +x ./gradlew
+            ./gradlew clean build -x test
+            
+            # .env 파일을 자동으로 인식하여 환경 변수 주입
+            docker compose down
+            docker compose up -d --build

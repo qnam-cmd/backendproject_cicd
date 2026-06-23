@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="adminItemDetailFragment">
+    <link rel="stylesheet" th:href="@{/css/admin/admin_itemDetail.css}">
+    <script th:src="@{/js/shop/itemReply.js}" defer></script>
+    <script th:src="@{/js/shop/itemDetail.js}" defer></script>
+
+    <div class="title"><h1>상품 상세</h1></div>
+
+    <div class="detail">
+        <div class="detail-con-top">
+            <div class="left">
+                <div class="detail-image">
+                    <th:block th:if="${item.attachFile==1}">
+                        <img th:src="@{|/full/upload/backend/item/${item.newFileName}|}" alt="상품이미지">
+                    </th:block>
+                    <th:block th:unless="${item.attachFile==1}">
+                        <img src="https://placehold.co/400x250/cccccc/ffffff?text=ITEM" alt="상품 이미지">
+                    </th:block>
+                </div>
+            </div>
+
+            <div class="right">
+                <h1 th:text="${item.itemTitle}"></h1>
+                <ul>
+                    <li>
+                        <label for="id">ID</label>
+                        <input type="text" name="id" id="id" th:value="${item.id}" readonly>
+                    </li>
+                    <li>
+                        <label for="itemTitle">상품명</label>
+                        <input type="text" name="itemTitle" id="itemTitle" th:value="${item.itemTitle}">
+                    </li>
+                    <li>
+                        <label for="itemDetail">상품설명</label>
+                        <input type="text" name="itemDetail" id="itemDetail" th:value="${item.itemDetail}">
+                    </li>
+                    <li>
+                        <label for="itemPrice">상품가격</label>
+                        <input type="text" name="itemPrice" id="itemPrice" th:value="${item.itemPrice}">
+                    </li>
+                    <li>
+                        <label for="memberId">등록회원</label>
+                        <input type="text" name="memberId" id="memberId" th:value="${item.memberId}" readonly>
+                    </li>
+                    <li>
+                        <label for="itemSize">상품개수</label>
+                        <input type="text" name="itemSize" id="itemSize" min="1" th:value="${item.itemSize}">
+                    </li>
+                    <li>
+                        <label for="createTime">생성 날짜</label>
+                        <span th:text="${#temporals.format(item.createTime, 'yyyy.MM.dd HH:mm')}" id="createTime"></span>
+                    </li>
+                    <li>
+                        <label for="updateTime">수정 날짜</label>
+                        <span th:text="${#temporals.format(item.updateTime, 'yyyy.MM.dd HH:mm')}" id="updateTime"></span>
+                    </li>
+                    <li>
+                        <label>합계금액: </label>
+                        <span id="total"></span>
+                    </li>
+                    <li>
+                        <th:block sec:authorize="isAuthenticated()">
+                            <input type="submit" value="상품수정">
+                            <button type="button" onclick="deleteFn(event)">삭제</button>
+                        </th:block>
+                    </li>
+                </ul>
+            </div>
+        </div> <div class="detail-con-bottom">
+        <div class="itemReply">
+            <div class="itemReply-con">
+                <h3>댓글 <span class="itemReply-count"></span></h3>
+                <input type="hidden" id="replyItemId" th:value="${item.id}">
+                <div class="itemReply-writer" sec:authorize="isAuthenticated()">
+                    <div class="itemReply-writer-info">
+                        <label for="itemReplyWriter">작성자</label>
+                        <input type="text" id="itemReplyWriter" th:value="${#authentication.principal.memberEntity.userName}" readonly>
+
+                        <label for="itemReplyPw">비밀번호</label>
+                        <input type="password" id="itemReplyPw" placeholder="비밀번호(필수)">
+                    </div>
+                    <label for="itemReplyContent" style="display:none;">댓글내용</label>
+                    <textarea id="itemReplyContent" placeholder="댓글을 입력하세요."></textarea>
+                    <button type="button" onclick="saveItemReplyFn()">작성</button>
+                </div>
+
+                <div class="itemReply-writer" sec:authorize="isAnonymous()">
+                    <p style="color: red; font-size: 14px;">댓글을 작성하려면 <a th:href="@{/member/login}" style="color: blue">로그인</a>이 필요합니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="itemReplyList" class="itemReply-list"></div>
+    </div> </div> </div>
+</html>
