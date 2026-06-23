@@ -159,6 +159,7 @@ public class CommunityServiceImpl implements CommunityService {
     // ======================================     게시글 상세     ==========================================//
 
     @Override
+    @Transactional(readOnly = true)
     public CommunityDto communityDetail(Long id) {
         // 게시글 조회
         CommunityEntity communityEntity = communityRepository.findById(id)
