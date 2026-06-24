@@ -52,7 +52,7 @@ docker compose logs -f backendprojectex
 
 깔끔하게 컨테이너들을 내리고 삭제하고 싶을 때 사용 (DB데이터는 물론 덕분에 보존됨)
 docker compose down
-//
+
 
 
 # 1. 켜져있는 컴포즈 서비스가 있다면 종료
