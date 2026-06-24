@@ -76,4 +76,5 @@ volumes:
 
 networks:
   spring-network:
+    name: spring-network
     driver: bridge
