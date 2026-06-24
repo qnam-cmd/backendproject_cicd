@@ -81,6 +81,9 @@ jobs:
             echo "KAKAO_MAP_APPKEY=${{ secrets.KAKAO_MAP_APPKEY }}" >> .env
             echo "KAKAO_REST_API_KEY=${{ secrets.KAKAO_REST_API_KEY }}" >> .env
             echo "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" >> .env
+            echo "OPENWEATHER_SERVICE_KEY=${{ secrets.OPENWEATHER_SERVICE_KEY }}" >> .env
+            echo "KOBIS_SERVICE_KEY=${{ secrets.KOBIS_SERVICE_KEY }}" >> .env
+            echo "BUS_SERVICE_KEY=${{ secrets.BUS_SERVICE_KEY }}" >> .env
             
             # 기존에 들고 있던 컨테이너 종료
             docker compose down

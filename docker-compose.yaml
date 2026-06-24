@@ -21,6 +21,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+      start_period: 40s  # 추가: 초기 구동 중에는 40초 동안 검사를 유예함
 
   rabbitmq:
     image: rabbitmq:3-management
