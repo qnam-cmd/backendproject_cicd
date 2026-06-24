@@ -12,7 +12,10 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
-      - spring-network
+      spring-network:
+        aliases:
+          - mysql
+
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 5s
@@ -45,7 +48,9 @@ services:
       rabbitmq:
         condition: service_started
     networks:
-      - spring-network
+      spring-network:
+        aliases:
+          - backendprojectex
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/backprojectdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=root
